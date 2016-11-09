@@ -137,7 +137,7 @@ void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
     cout << "Descript: " << robot_part_dlg->description() << endl;
     if ( robot_part_dlg->type().compare("arm") == 0)
     {
-        
+
     }
     robot_part_dlg->hide();
 
@@ -146,7 +146,7 @@ void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
 void cancel_robot_partCB(Fl_Widget* w, void* p) {
     robot_part_dlg->hide();
 }
-
+//
 //
 // Menu
 //
