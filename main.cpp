@@ -52,6 +52,7 @@ void create_robot_partCB(Fl_Widget* w, void* p);
 void cancel_robot_partCB(Fl_Widget* w, void* p);
 class Robot_Part_Dialog;
 
+
 //
 // Widgets
 //
@@ -102,8 +103,10 @@ public:
     string name() {return rp_name->value();}
     string part_number() {return rp_part_number->value();}
     string type() {return rp_type->value();}
-    string weight() {return rp_weight->value();}
-    string cost() {return rp_cost->value();}
+
+    double weight() {return atof(rp_weight->value());}
+
+    double cost() {return atof(rp_cost->value());}
     string description() {return rp_description->value();}
 
 private:
@@ -128,7 +131,8 @@ void menu_create_robot_partCB(Fl_Widget* w, void* p) {
     robot_part_dlg->show();
 }
 
-void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
+
+/*void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
     cout << "### Creating robot part" << endl;
     cout << "Name    : " << robot_part_dlg->name() << endl;
     cout << "Part #  : " << robot_part_dlg->part_number() << endl;
@@ -144,7 +148,7 @@ void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
     }
     robot_part_dlg->hide();
 
-}
+}*/
 
 void cancel_robot_partCB(Fl_Widget* w, void* p) {
     robot_part_dlg->hide();
@@ -193,9 +197,14 @@ Fl_Menu_Item menuitems[] = {
 };
 
 
+
+Shop shop{"Robbie Robot Shop"};
+Controller controller(shop);
+
+
 int main() {
-  Shop shop{"Robbie Robot Shop"};
-  Controller controller(shop);
+  //Shop shop{"Robbie Robot Shop"};
+  //Controller controller(shop);
   controller.cli();
 
     const int X = 660;
@@ -218,5 +227,45 @@ int main() {
     return(Fl::run());
 
 
+
+}
+
+
+void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
+    cout << "### Creating robot part" << endl;
+    cout << "Name    : " << robot_part_dlg->name() << endl;
+    cout << "Part #  : " << robot_part_dlg->part_number() << endl;
+    cout << "Type    : " << robot_part_dlg->type() << endl;
+    cout << "Weight  : " << robot_part_dlg->weight() << endl;
+    cout << "Cost    : " << robot_part_dlg->cost() << endl;
+    cout << "Descript: " << robot_part_dlg->description() << endl;
+
+    if ( robot_part_dlg->type().compare("arm") == 0)
+    {
+        shop.create_arm(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                        robot_part_dlg->cost(), 100,  robot_part_dlg->description()) ;
+    }
+    if ( robot_part_dlg->type().compare("head") == 0)
+    {
+        shop.create_head(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                         robot_part_dlg->cost(),   robot_part_dlg->description());
+    }
+    if ( robot_part_dlg->type().compare("torso") == 0)
+    {
+        shop.create_torso(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                         robot_part_dlg->cost(), 2,  robot_part_dlg->description());
+    }
+    if ( robot_part_dlg->type().compare("battery") == 0)
+    {
+        shop.create_battery(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                         robot_part_dlg->cost(), 100,  robot_part_dlg->description());
+    }
+    if ( robot_part_dlg->type().compare("locomotor") == 0)
+    {
+        shop.create_locomotor(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                            robot_part_dlg->cost(), 100, 100,  robot_part_dlg->description());
+    }
+
+    robot_part_dlg->hide();
 
 }

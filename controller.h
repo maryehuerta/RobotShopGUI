@@ -80,6 +80,8 @@ class Controller {
 
     void main_menu();
 
+
+
     string get_string(string prompt);
     int get_int(string prompt);
     double get_double(string prompt);
