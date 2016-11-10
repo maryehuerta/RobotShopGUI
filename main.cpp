@@ -41,6 +41,7 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Return_Button.H>
 #include <iostream>
+#include <FL/Fl_Text_Display.H>
 
 using namespace std;
 
@@ -51,7 +52,7 @@ using namespace std;
 void create_robot_partCB(Fl_Widget* w, void* p);
 void cancel_robot_partCB(Fl_Widget* w, void* p);
 class Robot_Part_Dialog;
-
+class Robot_Model_Dialog;
 
 //
 // Widgets
@@ -60,6 +61,7 @@ class Robot_Part_Dialog;
 Fl_Window *win;
 Fl_Menu_Bar *menubar;
 Robot_Part_Dialog *robot_part_dlg; // The dialog of interest!
+Robot_Model_Dialog *robot_model_dlg;
 
 //
 // Robot Part dialog
@@ -121,6 +123,77 @@ private:
     Fl_Button *rp_cancel;
 };
 
+class Robot_Model_Dialog {
+public:
+    Robot_Model_Dialog() {
+        dialog = new Fl_Window(600, 600, "Robot Model");
+
+        md_parts = new Fl_Text_Display(140, 400,100,100, "Hello");
+        md_parts->align(FL_ALIGN_LEFT);
+
+        md_part_number = new Fl_Input(120, 40, 210, 25, "Part Number:");
+        md_part_number->align(FL_ALIGN_LEFT);
+
+        md_type = new Fl_Input(120, 70, 210, 25, "Type:");
+        md_type->align(FL_ALIGN_LEFT);
+
+        md_weight = new Fl_Input(120, 100, 210, 25, "Weight:");
+        md_weight->align(FL_ALIGN_LEFT);
+
+        md_cost = new Fl_Input(120, 130, 210, 25, "Cost:");
+        md_cost->align(FL_ALIGN_LEFT);
+
+        md_description = new Fl_Multiline_Input(120, 160, 210, 75, "Description:");
+        md_description->align(FL_ALIGN_LEFT);
+
+        md_create = new Fl_Return_Button(145, 240, 120, 25, "Create");
+        md_create->callback((Fl_Callback *)create_robot_partCB, 0);
+
+        md_cancel = new Fl_Button(270, 240, 60, 25, "Cancel");
+        md_cancel->callback((Fl_Callback *)cancel_robot_partCB, 0);
+
+        dialog->end();
+        dialog->set_non_modal();
+    }
+
+    void show() {dialog->show();}
+    void hide() {dialog->hide();}
+    string name() {return md_name->value();}
+    string part_number() {return md_part_number->value();}
+    string type() {return md_type->value();}
+
+    double weight() {return atof(md_weight->value());}
+
+    double cost() {return atof(md_cost->value());}
+    string description() {return md_description->value();}
+
+private:
+    Fl_Window *dialog;
+    Fl_Text_Display *md_parts;
+    Fl_Input *md_name;
+    Fl_Input *md_part_number;
+    Fl_Input *md_type;
+    Fl_Input *md_weight;
+    Fl_Input *md_cost;
+    Fl_Input *md_description;
+    Fl_Return_Button *md_create;
+    Fl_Button *md_cancel;
+/*
+    string name() const;
+    string part_number() const;
+    double price() const;
+    Torso& torso() const;
+    Head& head() const;
+    Arm& arm1() const;
+    Arm& arm2() const;
+    Locomotor& locomotor() const;
+    Battery& battery1() const;
+    Battery& battery2() const;
+    Battery& battery3() const;
+    double parts_cost() const;
+    string to_string() const;
+*/
+ };
 //
 // Callbacks
 //
@@ -131,28 +204,19 @@ void menu_create_robot_partCB(Fl_Widget* w, void* p) {
     robot_part_dlg->show();
 }
 
+void menu_create_robot_modelCB(Fl_Widget* w, void* p) {
+    robot_model_dlg->show();
+}
 
-/*void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
-    cout << "### Creating robot part" << endl;
-    cout << "Name    : " << robot_part_dlg->name() << endl;
-    cout << "Part #  : " << robot_part_dlg->part_number() << endl;
-    cout << "Type    : " << robot_part_dlg->type() << endl;
-    cout << "Weight  : " << robot_part_dlg->weight() << endl;
-    cout << "Cost    : " << robot_part_dlg->cost() << endl;
-    cout << "Descript: " << robot_part_dlg->description() << endl;
-    if ( robot_part_dlg->type().compare("arm") == 0)
-    {
-        //create_arm(string name, string part_number, double weight, double cost, int max_power_consumed, string description)
-        //shop.create_arm(robot_part_dlg->name(),);
-
-    }
-    robot_part_dlg->hide();
-
-}*/
 
 void cancel_robot_partCB(Fl_Widget* w, void* p) {
     robot_part_dlg->hide();
 }
+
+void cancel_robot_modelCB(Fl_Widget* w, void* p){
+    robot_model_dlg->hide();
+
+};
 //
 //
 // Menu
@@ -177,7 +241,7 @@ Fl_Menu_Item menuitems[] = {
         { "Customer", 0, (Fl_Callback *)CB },
         { "Sales Associate", 0, (Fl_Callback *)CB, 0, FL_MENU_DIVIDER  },
         { "Robot Part", 0, (Fl_Callback *)menu_create_robot_partCB },
-        { "Robot Model", 0, (Fl_Callback *)CB },
+        { "Robot Model", 0, (Fl_Callback *)menu_create_robot_modelCB },
         { 0 },
         { "&Report", 0, 0, 0, FL_SUBMENU },
         { "Invoice", 0, (Fl_Callback *)CB, 0, FL_MENU_DIVIDER  },
@@ -212,7 +276,7 @@ int main() {
 
     // Create dialogs
     robot_part_dlg = new Robot_Part_Dialog{};
-
+    robot_model_dlg = new Robot_Model_Dialog {};
     // Create a window
     win = new Fl_Window{X, Y, "Robbie Robot Shop Manager"};
     win->color(FL_WHITE);
@@ -265,6 +329,14 @@ void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
         shop.create_locomotor(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
                             robot_part_dlg->cost(), 100, 100,  robot_part_dlg->description());
     }
+
+    robot_part_dlg->hide();
+
+}
+
+void create_model_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
+
+    cout << "Robot Model Created " << endl;
 
     robot_part_dlg->hide();
 
