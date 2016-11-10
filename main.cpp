@@ -44,6 +44,7 @@
 
 using namespace std;
 
+
 //
 // Declarations (we'll define later, just need to declare some variables!)
 //
@@ -137,6 +138,8 @@ void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
     cout << "Descript: " << robot_part_dlg->description() << endl;
     if ( robot_part_dlg->type().compare("arm") == 0)
     {
+        //create_arm(string name, string part_number, double weight, double cost, int max_power_consumed, string description)
+        //shop.create_arm(robot_part_dlg->name(),);
 
     }
     robot_part_dlg->hide();

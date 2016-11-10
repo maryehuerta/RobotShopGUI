@@ -4,29 +4,29 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/controller.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/arm.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/part.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/order.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/shop.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/model.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/customer.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/order.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/customer.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/locomotor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/head.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/controller.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/battery.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/order.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/torso.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/shop.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/battery.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/torso.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/part.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/sa.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/order.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/locomotor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/model.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/locomotor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/battery.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/part.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/head.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/arm.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/customer.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/locomotor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/sa.cpp" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
