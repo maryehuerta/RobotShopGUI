@@ -55,7 +55,7 @@ void create_robot_modelCB(Fl_Widget* w, void *p);
 void cancel_robot_modelCB(Fl_Widget* w, void* p);
 class Robot_Part_Dialog;
 class Robot_Model_Dialog;
-
+//güd
 //
 // Widgets
 //
