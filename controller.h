@@ -78,6 +78,18 @@ class Controller {
     const static int MENU_SHOW_MENU        = 98;
     const static int MENU_EXIT             = 99;
 
+    //
+    ///
+    /// GUI
+    ///
+
+    void torsos_create(string name, string part_number, double weight, double cost, string ship, string despcription);
+    /*shop.create_arm(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                        robot_part_dlg->cost(), 100,  robot_part_dlg->description()) ;*/
+    int get_int(string prompt);
+    double get_double(string prompt);
+    char* get_torso(int i);
+    /*
     void main_menu();
 
 
@@ -97,7 +109,7 @@ class Controller {
 
     void cli();
     void execute_cmd(int cmd);
-
+    */
 
 
   private:

@@ -35,6 +35,36 @@
 
 using namespace std;
 
+
+void Controller::torsos_create(string name, string part_number, double weight, double cost, string ship, string despcription){
+    shop.create_torso(name, part_number, weight, cost, get_double(ship), despcription) ;
+    cout << "Added torso" << endl;
+}
+
+char* Controller::get_torso(int i){
+    string s;
+    for (Torso t: shop.torsos())
+    {
+        cout << t << endl;
+        s = t.to_string();
+        char* c = new char[s.size()+1];
+        std::copy(s.begin(), s.end(), c);
+        c[s.size()] = '\0';
+        return c;
+    }
+}
+
+int Controller::get_int(string prompt) {
+    string s = prompt;
+    return atoi(s.c_str());
+}
+
+double Controller::get_double(string prompt) {
+    string s = prompt;
+    return atof(s.c_str());
+}
+
+/*
 void Controller::main_menu() {
   cout << endl;
   cout << "========================" << endl
@@ -77,15 +107,7 @@ string Controller::get_string(string prompt) {
     return s;
 }
 
-int Controller::get_int(string prompt) {
-    string s = get_string(prompt);
-    return atoi(s.c_str());
-}
 
-double Controller::get_double(string prompt) {
-    string s = get_string(prompt);
-    return atof(s.c_str());
-}
 
 Customer& Controller::get_customer(string prompt) {
     for (int i=0; i < shop.customers().size(); ++i) {
@@ -302,4 +324,4 @@ void Controller::execute_cmd(int cmd) {
         break;
   }
 }
-
+*/

@@ -42,7 +42,7 @@
 #include <FL/Fl_Return_Button.H>
 #include <iostream>
 #include <FL/Fl_Text_Display.H>
-#include <FL/Fl_Browser.H>
+#include <FL/Fl_Check_Browser.H>
 using namespace std;
 
 
@@ -53,6 +53,7 @@ void create_robot_partCB(Fl_Widget* w, void* p);
 void cancel_robot_partCB(Fl_Widget* w, void* p);
 void create_robot_modelCB(Fl_Widget* w, void *p);
 void cancel_robot_modelCB(Fl_Widget* w, void* p);
+void refresh_robot_modelCB(Fl_Widget* w, void* p);
 class Robot_Part_Dialog;
 class Robot_Model_Dialog;
 //güd
@@ -64,7 +65,9 @@ Fl_Window *win;
 Fl_Menu_Bar *menubar;
 Robot_Part_Dialog *robot_part_dlg; // The dialog of interest!
 Robot_Model_Dialog *robot_model_dlg;
-
+Shop shop{"Robbie Robot Shop"};
+Controller controller(shop);
+Fl_Check_Browser *md_parts;
 //
 // Robot Part dialog
 //
@@ -93,6 +96,7 @@ public:
         rp_description->align(FL_ALIGN_LEFT);
 
         rp_create = new Fl_Return_Button(145, 240, 120, 25, "Create");
+
         rp_create->callback((Fl_Callback *)create_robot_partCB, 0);
 
         rp_cancel = new Fl_Button(270, 240, 60, 25, "Cancel");
@@ -124,21 +128,77 @@ private:
     Fl_Return_Button *rp_create;
     Fl_Button *rp_cancel;
 };
+void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
+    cout << "### Creating robot part" << endl;
+    cout << "Name    : " << robot_part_dlg->name() << endl;
+    cout << "Part #  : " << robot_part_dlg->part_number() << endl;
+    cout << "Type    : " << robot_part_dlg->type() << endl;
+    cout << "Weight  : " << robot_part_dlg->weight() << endl;
+    cout << "Cost    : " << robot_part_dlg->cost() << endl;
+    cout << "Descript: " << robot_part_dlg->description() << endl;
 
+
+
+    if ( robot_part_dlg->type().compare("torso") == 0)
+    {
+
+        controller.torsos_create(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                                 robot_part_dlg->cost(), "123",  robot_part_dlg->description());
+
+
+
+
+        /*controller.MENU_CREATE_ARM;*/
+        /*shop.create_arm(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                        robot_part_dlg->cost(), 100,  robot_part_dlg->description()) ;*/
+    }/*
+    if ( robot_part_dlg->type().compare("head") == 0)
+    {
+        shop.create_head(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                         robot_part_dlg->cost(),   robot_part_dlg->description());
+    }
+    if ( robot_part_dlg->type().compare("torso") == 0)
+    {
+        shop.create_torso(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                          robot_part_dlg->cost(), 2,  robot_part_dlg->description());
+
+    }
+    if ( robot_part_dlg->type().compare("battery") == 0)
+    {
+        shop.create_battery(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                            robot_part_dlg->cost(), 100,  robot_part_dlg->description());
+    }
+    if ( robot_part_dlg->type().compare("locomotor") == 0)
+    {
+        shop.create_locomotor(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                              robot_part_dlg->cost(), 100, 100,  robot_part_dlg->description());
+    }
+
+  */
+    Fl::check();
+
+    robot_part_dlg->hide();
+
+}
 
 class Robot_Model_Dialog {
 public:
     Robot_Model_Dialog() {
+
+
+        Fl::check();
+
+
         dialog = new Fl_Window(600, 600, "Robot Model");
 
-        md_parts = new Fl_Browser(140, 400, 100, 100, "Choose a part");
+        md_refresh = new Fl_Button(300, 550, 60, 25, "Refresh");
+
+        md_parts = new Fl_Check_Browser(140, 400, 200, 100, "Choose a part");
         md_parts->align(FL_ALIGN_LEFT);
 
+        md_refresh->callback((Fl_Callback *) refresh_robot_modelCB , 0);
 
 
-        /*for (Torso t: shop.torsos()) cout << t << endl;
-        cout << endl;
-         */
         md_part_number = new Fl_Input(120, 40, 210, 25, "Part Number:");
         md_part_number->align(FL_ALIGN_LEFT);
 
@@ -154,10 +214,10 @@ public:
         md_description = new Fl_Multiline_Input(120, 160, 210, 75, "Description:");
         md_description->align(FL_ALIGN_LEFT);
 
-        md_create = new Fl_Return_Button(145, 240, 120, 25, "Create");
+        md_create = new Fl_Return_Button(370, 550, 120, 25, "Create");
         md_create->callback((Fl_Callback *) create_robot_modelCB, 0);
 
-        md_cancel = new Fl_Button(270, 240, 60, 25, "Cancel");
+        md_cancel = new Fl_Button(500, 550, 60, 25, "Cancel");
         md_cancel->callback((Fl_Callback *) cancel_robot_modelCB, 0);
 
         dialog->end();
@@ -182,7 +242,7 @@ public:
 
 private:
     Fl_Window *dialog;
-    Fl_Browser *md_parts;
+    //Fl_Check_Browser *md_parts;
     Fl_Input *md_name;
     Fl_Input *md_part_number;
     Fl_Input *md_type;
@@ -191,23 +251,11 @@ private:
     Fl_Input *md_description;
     Fl_Return_Button *md_create;
     Fl_Button *md_cancel;
+    Fl_Button *md_refresh;
+public:
+    //Fl_Check_Browser *md_parts;
 };
 
-/*
-    string name() const;
-    string part_number() const;
-    double price() const;
-    Torso& torso() const;
-    Head& head() const;
-    Arm& arm1() const;
-    Arm& arm2() const;
-    Locomotor& locomotor() const;
-    Battery& battery1() const;
-    Battery& battery2() const;
-    Battery& battery3() const;
-    double parts_cost() const;
-    string to_string() const;
-*/
 
 //
 // Callbacks
@@ -231,7 +279,42 @@ void cancel_robot_modelCB(Fl_Widget* w, void* p) {
 void cancel_robot_partCB(Fl_Widget* w, void* p){
     robot_part_dlg->hide();
 
+
 };
+void refresh_robot_modelCB(Fl_Widget* w, void* p) {
+    ///
+    ///
+    ///
+    //Fl_Check_Browser *md_parts = (Fl_Check_Browser*)w;
+    robot_model_dlg->hide();
+    md_parts->clear();
+    char* q;
+    string s;
+
+
+    for (Torso t: shop.torsos())
+    {
+        cout << t << endl;
+        s = t.to_string();
+        char* c = new char[s.size()+1];
+        std::copy(s.begin(), s.end(), c);
+        c[s.size()] = '\0';
+        md_parts->add(c);
+    }
+    robot_model_dlg->show();
+
+};
+
+
+void create_robot_modelCB(Fl_Widget* w, void* p) { // Replace with call to model!
+
+    cout << "Robot Model Created " << endl;
+    Fl::redraw();
+    robot_model_dlg->hide();
+
+}
+
+
 //
 //
 // Menu
@@ -277,20 +360,19 @@ Fl_Menu_Item menuitems[] = {
 
 
 
-Shop shop{"Robbie Robot Shop"};
-Controller controller(shop);
 
 
 int main() {
   //Shop shop{"Robbie Robot Shop"};
   //Controller controller(shop);
-  controller.cli();
+  //controller.cli();
 
     const int X = 660;
     const int Y = 320;
 
     // Create dialogs
     robot_part_dlg = new Robot_Part_Dialog{};
+
     robot_model_dlg = new Robot_Model_Dialog {};
     // Create a window
     win = new Fl_Window{X, Y, "Robbie Robot Shop Manager"};
@@ -300,58 +382,14 @@ int main() {
     menubar = new Fl_Menu_Bar(0, 0, X, 30);
     menubar->menu(menuitems);
 
+
+
+
     // Wrap it up and let FLTK do its thing
     win->end();
     win->show();
     return(Fl::run());
 
 
-
-}
-
-void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
-    cout << "### Creating robot part" << endl;
-    cout << "Name    : " << robot_part_dlg->name() << endl;
-    cout << "Part #  : " << robot_part_dlg->part_number() << endl;
-    cout << "Type    : " << robot_part_dlg->type() << endl;
-    cout << "Weight  : " << robot_part_dlg->weight() << endl;
-    cout << "Cost    : " << robot_part_dlg->cost() << endl;
-    cout << "Descript: " << robot_part_dlg->description() << endl;
-
-    if ( robot_part_dlg->type().compare("arm") == 0)
-    {
-        shop.create_arm(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                        robot_part_dlg->cost(), 100,  robot_part_dlg->description()) ;
-    }
-    if ( robot_part_dlg->type().compare("head") == 0)
-    {
-        shop.create_head(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                         robot_part_dlg->cost(),   robot_part_dlg->description());
-    }
-    if ( robot_part_dlg->type().compare("torso") == 0)
-    {
-        shop.create_torso(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                         robot_part_dlg->cost(), 2,  robot_part_dlg->description());
-    }
-    if ( robot_part_dlg->type().compare("battery") == 0)
-    {
-        shop.create_battery(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                         robot_part_dlg->cost(), 100,  robot_part_dlg->description());
-    }
-    if ( robot_part_dlg->type().compare("locomotor") == 0)
-    {
-        shop.create_locomotor(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                            robot_part_dlg->cost(), 100, 100,  robot_part_dlg->description());
-    }
-
-    robot_part_dlg->hide();
-
-}
-
-void create_robot_modelCB(Fl_Widget* w, void* p) { // Replace with call to model!
-
-    cout << "Robot Model Created " << endl;
-
-    robot_model_dlg->hide();
 
 }
