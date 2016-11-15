@@ -191,9 +191,9 @@ public:
 
         dialog = new Fl_Window(600, 600, "Robot Model");
 
-        md_refresh = new Fl_Button(300, 550, 60, 25, "Refresh");
+        md_refresh = new Fl_Button(465, 570, 60, 25, "Refresh");
 
-        md_parts = new Fl_Check_Browser(140, 400, 200, 100, "Choose a part");
+        md_parts = new Fl_Check_Browser(140, 400, 200, 100, "Choose a torso");
         md_parts->align(FL_ALIGN_LEFT);
 
         md_refresh->callback((Fl_Callback *) refresh_robot_modelCB , 0);
@@ -214,10 +214,10 @@ public:
         md_description = new Fl_Multiline_Input(120, 160, 210, 75, "Description:");
         md_description->align(FL_ALIGN_LEFT);
 
-        md_create = new Fl_Return_Button(370, 550, 120, 25, "Create");
+        md_create = new Fl_Return_Button(340, 570, 120, 25, "Create");
         md_create->callback((Fl_Callback *) create_robot_modelCB, 0);
 
-        md_cancel = new Fl_Button(500, 550, 60, 25, "Cancel");
+        md_cancel = new Fl_Button(530, 570, 60, 25, "Cancel");
         md_cancel->callback((Fl_Callback *) cancel_robot_modelCB, 0);
 
         dialog->end();
