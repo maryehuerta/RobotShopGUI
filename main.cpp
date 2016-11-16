@@ -43,6 +43,7 @@
 #include <iostream>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Check_Browser.H>
+#include <FL/Fl_Browser.H>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -61,10 +62,13 @@ void cancel_robot_modelCB(Fl_Widget* w, void* p);
 void refresh_robot_modelCB(Fl_Widget* w, void* p);
 void okay_report_partsCB(Fl_Widget* w, void* p);
 void refresh_report_partsCB(Fl_Widget* w, void* p);
+void okay_report_modelsCB(Fl_Widget* w, void* p);
+void refresh_report_modelsCB(Fl_Widget* w, void* p);
 
 class Robot_Part_Dialog;
 class Robot_Model_Dialog;
 class Report_All_Parts_Dialog;
+class Report_All_Models_Dialog;
 //güd
 //
 // Widgets
@@ -75,7 +79,7 @@ Fl_Menu_Bar *menubar;
 Robot_Part_Dialog *robot_part_dlg;
 Robot_Model_Dialog *robot_model_dlg;
 Report_All_Parts_Dialog *report_all_parts_dlg;
-
+Report_All_Models_Dialog *report_all_models_dlg;
 
 Shop shop{"Robbie Robot Shop"};
 Controller controller(shop);
@@ -97,6 +101,7 @@ Fl_Check_Browser* rt_locomotor_broswer;
 Fl_Check_Browser* rt_battery1_broswer;
 Fl_Check_Browser* rt_battery2_broswer;
 Fl_Check_Browser* rt_battery3_broswer;
+Fl_Browser* rt_models;
 
 //
 // Robot Part dialog
@@ -381,6 +386,35 @@ public:
     //Fl_Check_Browser *md_parts;
 };
 
+class Report_All_Models_Dialog {
+public:
+    Report_All_Models_Dialog() {
+        Fl::check();
+        dialog = new Fl_Window(700, 700, "Report All Parts");
+
+        rt_models = new Fl_Browser(80, 30, 600, 100, "Models");
+        rt_models->align(FL_ALIGN_LEFT);
+
+        md_create = new Fl_Return_Button(370, 670, 120, 25, "Okay");
+        md_create->callback((Fl_Callback *) okay_report_modelsCB, 0);
+
+        md_refresh = new Fl_Button(495, 670, 60, 25, "Refresh");
+        md_refresh->callback((Fl_Callback *) refresh_report_modelsCB , 0);
+
+        dialog->end();
+        dialog->set_non_modal();
+    }
+
+    void show() { dialog->show(); }
+    void hide() { dialog->hide(); }
+
+private:
+    Fl_Window *dialog;
+    Fl_Return_Button *md_create;
+    Fl_Button *md_refresh;
+
+};
+
 //
 // Callbacks
 //
@@ -402,6 +436,12 @@ void okay_report_partsCB(Fl_Widget* w, void* p) {
     report_all_parts_dlg->hide();
 }
 
+void menu_report_robot_modelsCB(Fl_Widget* w, void* p) {
+    report_all_models_dlg->show();
+}
+void okay_report_modelsCB(Fl_Widget* w, void* p) {
+    report_all_models_dlg->hide();
+}
 
 void cancel_robot_modelCB(Fl_Widget* w, void* p) {
     robot_model_dlg->hide();
@@ -568,9 +608,38 @@ void refresh_report_partsCB(Fl_Widget* w, void* p) {
 
 }
 
+void refresh_report_modelsCB(Fl_Widget* w, void* p) {
+    report_all_models_dlg->hide();
+    rt_models->clear();
+
+    char* c;
+    string s;
+    ostringstream os;
+    for (Robot_model r: shop.models())
+    {
+        //cout << r << endl;
+        s = r.to_string();
+        //cout << r << endl;
+        //os<<r;
+        //s=os.str();
+
+        c = controller.get_charstar(s);
+        rt_models->add(c);
+        //os.str("");
+        //os.clear();
+    }
+    report_all_models_dlg->show();
+
+}
+
 
 void create_robot_modelCB(Fl_Widget* w, void* p) { // Replace with call to model!
 
+    cout << "### Creating robot model" << endl;
+    cout << "Name    : " << robot_model_dlg->name() << endl;
+    cout << "Part #  : " << robot_model_dlg->part_number() << endl;
+    cout << "Cost    : " << robot_model_dlg->cost() << endl;
+    cout << "TorsoNum   : " << robot_model_dlg->torso_num() << endl;
 
     cout << "Robot Model Created " << endl;
     shop.create_model(robot_model_dlg->name(),
@@ -623,7 +692,7 @@ Fl_Menu_Item menuitems[] = {
         { "Orders by Sales Associate", 0, (Fl_Callback *)CB, 0, FL_MENU_DIVIDER },
         { "All Customers", 0, (Fl_Callback *)CB },
         { "All Sales Associates", 0, (Fl_Callback *)CB, 0, FL_MENU_DIVIDER  },
-        { "All Robot Models", 0, (Fl_Callback *)CB },
+        { "All Robot Models", 0, (Fl_Callback *)menu_report_robot_modelsCB },
         { "All Robot Parts", 0, (Fl_Callback *)menu_report_robot_partsCB },
         { 0 },
         { "&Help", 0, 0, 0, FL_SUBMENU },
@@ -648,9 +717,9 @@ int main() {
 
     // Create dialogs
     robot_part_dlg = new Robot_Part_Dialog{};
-
     robot_model_dlg = new Robot_Model_Dialog {};
 
+    report_all_models_dlg = new Report_All_Models_Dialog{};
     report_all_parts_dlg = new Report_All_Parts_Dialog {};
 
     // Create a window

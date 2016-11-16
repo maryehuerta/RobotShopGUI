@@ -61,14 +61,14 @@ string Robot_model::to_string() const {return _name + " (PN " + _part_number + "
 ostream& operator<<(ostream& os, const Robot_model& model) {
   return os << fixed << setprecision(2)
             << model.name() << " (" << " PN " << model.part_number() 
-            << " parts cost $" << model.parts_cost() << " price $" << model.price() << ")" << endl
-            << "   " << model.torso() << endl
+            << " parts cost $" << model.parts_cost() << " price $" << model.price() << ")"
+            /*<< "   " << model.torso();
             << "   " << model.head() << endl
             << "   " << model.arm1() << endl
             << "   " << model.arm2() << endl
             << "   " << model.locomotor() << endl
             << "   " << model.battery1() << endl
             << "   " << model.battery2() << endl
-            << "   " << model.battery3();
+            << "   " << model.battery3()*/;
 }
 
