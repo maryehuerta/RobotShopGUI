@@ -44,3 +44,5 @@ ostream& operator<<(ostream& os, const Battery& battery) {
             << ", max energy " << battery.max_energy() << " kWh"
             << " - " << battery.description();
 }
+
+

@@ -43,8 +43,11 @@
 #include <iostream>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Check_Browser.H>
-#include <sstream>
+#include <fstream>
+#include <iostream>
 #include <string>
+#include <sstream>
+
 using namespace std;
 
 
@@ -56,8 +59,12 @@ void cancel_robot_partCB(Fl_Widget* w, void* p);
 void create_robot_modelCB(Fl_Widget* w, void *p);
 void cancel_robot_modelCB(Fl_Widget* w, void* p);
 void refresh_robot_modelCB(Fl_Widget* w, void* p);
+void okay_report_partsCB(Fl_Widget* w, void* p);
+void refresh_report_partsCB(Fl_Widget* w, void* p);
+
 class Robot_Part_Dialog;
 class Robot_Model_Dialog;
+class Report_All_Parts_Dialog;
 //güd
 //
 // Widgets
@@ -65,8 +72,11 @@ class Robot_Model_Dialog;
 
 Fl_Window *win;
 Fl_Menu_Bar *menubar;
-Robot_Part_Dialog *robot_part_dlg; // The dialog of interest!
+Robot_Part_Dialog *robot_part_dlg;
 Robot_Model_Dialog *robot_model_dlg;
+Report_All_Parts_Dialog *report_all_parts_dlg;
+
+
 Shop shop{"Robbie Robot Shop"};
 Controller controller(shop);
 
@@ -78,6 +88,16 @@ Fl_Check_Browser* md_locomotor_broswer;
 Fl_Check_Browser* md_battery1_broswer;
 Fl_Check_Browser* md_battery2_broswer;
 Fl_Check_Browser* md_battery3_broswer;
+
+Fl_Check_Browser* rt_torso_broswer;
+Fl_Check_Browser* rt_head_broswer;
+Fl_Check_Browser* rt_arm1_broswer;
+Fl_Check_Browser* rt_arm2_broswer;
+Fl_Check_Browser* rt_locomotor_broswer;
+Fl_Check_Browser* rt_battery1_broswer;
+Fl_Check_Browser* rt_battery2_broswer;
+Fl_Check_Browser* rt_battery3_broswer;
+
 //
 // Robot Part dialog
 //
@@ -303,6 +323,64 @@ public:
 };
 
 
+class Report_All_Parts_Dialog {
+public:
+    Report_All_Parts_Dialog() {
+
+
+        Fl::check();
+
+
+        dialog = new Fl_Window(700, 700, "Report All Parts");
+
+        rt_torso_broswer = new Fl_Check_Browser(80, 30, 600, 100, "Torsos");
+        rt_torso_broswer->align(FL_ALIGN_LEFT);
+
+        rt_head_broswer = new Fl_Check_Browser(80, 160, 600, 100, "Heads");
+        rt_head_broswer->align(FL_ALIGN_LEFT);
+
+
+        rt_arm1_broswer = new Fl_Check_Browser(80, 290, 600, 100, "Arms");
+        rt_arm1_broswer->align(FL_ALIGN_LEFT);
+
+        rt_locomotor_broswer = new Fl_Check_Browser(80, 420, 600, 100, "Locomotors");
+        rt_locomotor_broswer->align(FL_ALIGN_LEFT);
+
+
+        rt_battery1_broswer = new Fl_Check_Browser(80, 550, 600, 100, "Batteries");
+        rt_battery1_broswer->align(FL_ALIGN_LEFT);
+
+
+        md_create = new Fl_Return_Button(370, 670, 120, 25, "Okay");
+        md_create->callback((Fl_Callback *) okay_report_partsCB, 0);
+
+        md_refresh = new Fl_Button(495, 670, 60, 25, "Refresh");
+        md_refresh->callback((Fl_Callback *) refresh_report_partsCB , 0);
+
+
+        dialog->end();
+        dialog->set_non_modal();
+    }
+
+    void show() { dialog->show(); }
+
+    void hide() { dialog->hide(); }
+
+
+
+
+
+private:
+    Fl_Window *dialog;
+    //Fl_Check_Browser *md_parts;
+
+    Fl_Return_Button *md_create;
+
+    Fl_Button *md_refresh;
+public:
+    //Fl_Check_Browser *md_parts;
+};
+
 //
 // Callbacks
 //
@@ -317,6 +395,13 @@ void menu_create_robot_modelCB(Fl_Widget* w, void* p) {
     robot_model_dlg->show();
 }
 
+void menu_report_robot_partsCB(Fl_Widget* w, void* p) {
+    report_all_parts_dlg->show();
+}
+void okay_report_partsCB(Fl_Widget* w, void* p) {
+    report_all_parts_dlg->hide();
+}
+
 
 void cancel_robot_modelCB(Fl_Widget* w, void* p) {
     robot_model_dlg->hide();
@@ -328,6 +413,7 @@ void cancel_robot_partCB(Fl_Widget* w, void* p){
 
 };
 void refresh_robot_modelCB(Fl_Widget* w, void* p) {
+
 
     robot_model_dlg->hide();
     md_torso_broswer->clear();
@@ -345,6 +431,12 @@ void refresh_robot_modelCB(Fl_Widget* w, void* p) {
     for (Torso t: shop.torsos())
     {
         cout << t << endl;
+
+        //std::string s;
+        //std::ostringstream os;
+        //os<<t;
+        //s=os.str();
+
         s = t.to_string();
         c = controller.get_charstar(s);
         md_torso_broswer->add(c);
@@ -363,6 +455,7 @@ void refresh_robot_modelCB(Fl_Widget* w, void* p) {
     }
 
     for (Head h: shop.heads()){
+
         cout << h << endl;
         s = h.to_string();
         c = controller.get_charstar(s);
@@ -387,10 +480,93 @@ void refresh_robot_modelCB(Fl_Widget* w, void* p) {
         bnum++;
 
     }
-
+    //robot_model_dlg->hide();
+    //report_all_parts_dlg->hide();
     robot_model_dlg->show();
+    //report_all_parts_dlg->show();
 
 };
+
+void refresh_report_partsCB(Fl_Widget* w, void* p) {
+    report_all_parts_dlg->hide();
+    rt_torso_broswer->clear();
+    rt_head_broswer->clear();
+    rt_arm1_broswer->clear();
+    rt_locomotor_broswer->clear();
+    rt_battery1_broswer->clear();
+
+
+    char* c;
+    string s;
+    ostringstream os;
+
+
+
+    for (Torso t: shop.torsos())
+    {
+        cout << t << endl;
+        os<<t;
+        s=os.str();
+
+        c = controller.get_charstar(s);
+        rt_torso_broswer->add(c);
+        os.str("");
+        os.clear();
+    }
+
+    for (Arm a: shop.arms()){
+        cout << a << endl;
+        os << a;
+        s=os.str();
+
+        c = controller.get_charstar(s);
+        rt_arm1_broswer->add(c);
+        os.str("");
+        os.clear();
+    }
+
+    for (Head h: shop.heads()){
+
+        cout << h << endl;
+        os << h;
+        s=os.str();
+        c = controller.get_charstar(s);
+        rt_head_broswer->add(c);
+        os.str("");
+        os.clear();
+    }
+
+    for (Locomotor l: shop.locomotors()){
+        cout << l << endl;
+        os << l;
+        s = os.str();
+
+        c = controller.get_charstar(s);
+        rt_locomotor_broswer->add(c);
+        os.str("");
+        os.clear();
+    }
+    int bnum = 0;
+    for (Battery b: shop.batteries()){
+        cout << b << endl;
+        os << b;
+        s = os.str();
+        c = controller.get_charstar(s);
+        if (bnum > 0) {
+            rt_battery1_broswer->add(c);
+
+        }
+        os.str("");
+        os.clear();
+        bnum++;
+
+    }
+
+
+
+    report_all_parts_dlg->show();
+
+}
 
 
 void create_robot_modelCB(Fl_Widget* w, void* p) { // Replace with call to model!
@@ -448,7 +624,7 @@ Fl_Menu_Item menuitems[] = {
         { "All Customers", 0, (Fl_Callback *)CB },
         { "All Sales Associates", 0, (Fl_Callback *)CB, 0, FL_MENU_DIVIDER  },
         { "All Robot Models", 0, (Fl_Callback *)CB },
-        { "All Robot Parts", 0, (Fl_Callback *)CB },
+        { "All Robot Parts", 0, (Fl_Callback *)menu_report_robot_partsCB },
         { 0 },
         { "&Help", 0, 0, 0, FL_SUBMENU },
         { "&Manual", 0, (Fl_Callback *)CB},
@@ -466,6 +642,7 @@ int main() {
   //Controller controller(shop);
   //controller.cli();
 
+
     const int X = 660;
     const int Y = 320;
 
@@ -473,6 +650,9 @@ int main() {
     robot_part_dlg = new Robot_Part_Dialog{};
 
     robot_model_dlg = new Robot_Model_Dialog {};
+
+    report_all_parts_dlg = new Report_All_Parts_Dialog {};
+
     // Create a window
     win = new Fl_Window{X, Y, "Robbie Robot Shop Manager"};
     win->color(FL_WHITE);
