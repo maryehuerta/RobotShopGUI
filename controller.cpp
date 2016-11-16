@@ -36,10 +36,6 @@
 using namespace std;
 
 
-void Controller::torsos_create(string name, string part_number, double weight, double cost, string ship, string despcription){
-    shop.create_torso(name, part_number, weight, cost, get_double(ship), despcription) ;
-    cout << "Added torso" << endl;
-}
 
 char* Controller::get_torso(int i){
     string s;

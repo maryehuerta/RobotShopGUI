@@ -13,6 +13,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e91bae3-8f5f-42c8-b9ed-817bdcaa8ee1" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller.cpp" afterPath="$PROJECT_DIR$/controller.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.cpp" afterPath="$PROJECT_DIR$/main.cpp" />
     </list>
     <ignored path="RobotShop.iws" />
@@ -38,8 +40,8 @@
           <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="197">
-                  <caret line="195" column="75" selection-start-line="195" selection-start-column="75" selection-end-line="195" selection-end-column="75" />
+                <state relative-caret-position="291">
+                  <caret line="346" column="5" selection-start-line="346" selection-start-column="5" selection-end-line="346" selection-end-column="5" />
                   <folding>
                     <element signature="e#1371#1394#0" expanded="true" />
                   </folding>
@@ -85,11 +87,21 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="model.cpp" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/model.cpp">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-282">
+                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="controller.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/controller.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="465">
-                  <caret line="143" column="0" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
+                <state relative-caret-position="2880">
+                  <caret line="212" column="0" selection-start-line="212" selection-start-column="0" selection-end-line="227" selection-end-column="21" />
                   <folding>
                     <element signature="e#1371#1394#0" expanded="true" />
                   </folding>
@@ -124,8 +136,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="383" />
-    <option name="y" value="64" />
+    <option name="x" value="204" />
+    <option name="y" value="44" />
     <option name="width" value="1852" />
     <option name="height" value="1053" />
   </component>
@@ -381,10 +393,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38994000" />
+    <option name="totallyTimeSpent" value="43441000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="383" y="64" width="1852" height="1053" extended-state="0" />
+    <frame x="204" y="44" width="1852" height="1053" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18186784" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -802,14 +814,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="750">
@@ -823,16 +827,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controller.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="143" column="0" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
-          <folding>
-            <element signature="e#1371#1394#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -854,10 +848,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/model.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-282">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controller.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2880">
+          <caret line="212" column="0" selection-start-line="212" selection-start-column="0" selection-end-line="227" selection-end-column="21" />
+          <folding>
+            <element signature="e#1371#1394#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="195" column="75" selection-start-line="195" selection-start-column="75" selection-end-line="195" selection-end-column="75" />
+        <state relative-caret-position="291">
+          <caret line="346" column="5" selection-start-line="346" selection-start-column="5" selection-end-line="346" selection-end-column="5" />
           <folding>
             <element signature="e#1371#1394#0" expanded="true" />
           </folding>

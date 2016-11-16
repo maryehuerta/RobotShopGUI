@@ -67,7 +67,14 @@ Robot_Part_Dialog *robot_part_dlg; // The dialog of interest!
 Robot_Model_Dialog *robot_model_dlg;
 Shop shop{"Robbie Robot Shop"};
 Controller controller(shop);
-Fl_Check_Browser *md_parts;
+Fl_Check_Browser* md_torso_broswer;
+Fl_Check_Browser* md_head_broswer;
+Fl_Check_Browser* md_arm1_broswer;
+Fl_Check_Browser* md_arm2_broswer;
+Fl_Check_Browser* md_locomotor_broswer;
+Fl_Check_Browser* md_battery1_broswer;
+Fl_Check_Browser* md_battery2_broswer;
+Fl_Check_Browser* md_battery3_broswer;
 //
 // Robot Part dialog
 //
@@ -137,21 +144,11 @@ void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
     cout << "Cost    : " << robot_part_dlg->cost() << endl;
     cout << "Descript: " << robot_part_dlg->description() << endl;
 
-
-
-    if ( robot_part_dlg->type().compare("torso") == 0)
+    if ( robot_part_dlg->type().compare("arm") == 0)
     {
-
-        controller.torsos_create(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                                 robot_part_dlg->cost(), "123",  robot_part_dlg->description());
-
-
-
-
-        /*controller.MENU_CREATE_ARM;*/
-        /*shop.create_arm(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                        robot_part_dlg->cost(), 100,  robot_part_dlg->description()) ;*/
-    }/*
+        shop.create_arm(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
+                        robot_part_dlg->cost(), 100,  robot_part_dlg->description()) ;
+    }
     if ( robot_part_dlg->type().compare("head") == 0)
     {
         shop.create_head(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
@@ -174,7 +171,7 @@ void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
                               robot_part_dlg->cost(), 100, 100,  robot_part_dlg->description());
     }
 
-  */
+
     Fl::check();
 
     robot_part_dlg->hide();
@@ -189,36 +186,70 @@ public:
         Fl::check();
 
 
-        dialog = new Fl_Window(600, 600, "Robot Model");
+        //Created for testing
+        shop.create_battery("B1", "3", 5.3, 10.99, 2, "The battery like no other" );
+        shop.create_battery("Blue8000", "3", 5.3, 10.99, 80, "This battery has tons of power" );
+        shop.create_head("TheHead", "51", 12.1, 10.99, "Robot head with lights");
+        shop.create_head("V2", "11", 11.1, 15.99, "Robot head that is sturdy");
+        shop.create_arm("Army", "4", 1.1, 2.99, 1, "It's an arm with flare");
+        shop.create_arm("Lefty", "2", 2.1, 3.99, 2, "A left arm that can rotate");
+        shop.create_arm("Righty", "1", 2.1, 2.99, 1, "A right arm that can't rotate");
+        shop.create_locomotor("Loco's Motors", "22", 8.4, 11.95, 5, 2, "This will get your robot far");
+        shop.create_locomotor("Motor541", "22", 1.1, 10.00, 2, 1, "caution prone to fires");
+        shop.create_torso("Timmy's Torso", "1", 3.1, 3.99, 3, "This is a hard out shell of a torso");
+        shop.create_torso("BaseCamp", "300", 30.1, 30.39, 1, "Toughest most reliable torso on the robot black market");
 
-        md_refresh = new Fl_Button(465, 570, 60, 25, "Refresh");
+        dialog = new Fl_Window(610, 600, "Robot Model");
 
-        md_parts = new Fl_Check_Browser(140, 400, 200, 100, "Choose a torso");
-        md_parts->align(FL_ALIGN_LEFT);
+        md_torso_broswer = new Fl_Check_Browser(400, 10, 200, 50, "Torso");
+        md_torso_broswer->align(FL_ALIGN_LEFT);
 
-        md_refresh->callback((Fl_Callback *) refresh_robot_modelCB , 0);
+        md_head_broswer = new Fl_Check_Browser(400, 70, 200, 50, "Head");
+        md_head_broswer->align(FL_ALIGN_LEFT);
 
 
-        md_part_number = new Fl_Input(120, 40, 210, 25, "Part Number:");
+        md_arm1_broswer = new Fl_Check_Browser(400, 140, 200, 50, "Arm 1");
+        md_arm1_broswer->align(FL_ALIGN_LEFT);
+
+
+        md_arm2_broswer = new Fl_Check_Browser(400, 210, 200, 50, "Arm 2");
+        md_arm2_broswer->align(FL_ALIGN_LEFT);
+
+
+        md_locomotor_broswer = new Fl_Check_Browser(400, 280, 200, 50, "Locomotor");
+        md_locomotor_broswer->align(FL_ALIGN_LEFT);
+
+
+        md_battery1_broswer = new Fl_Check_Browser(400, 350, 200, 50, "Battery 1");
+        md_battery1_broswer->align(FL_ALIGN_LEFT);
+
+
+        md_battery2_broswer = new Fl_Check_Browser(400, 420, 200, 50, "Battery 2");
+        md_battery2_broswer->align(FL_ALIGN_LEFT);
+
+
+        md_battery3_broswer = new Fl_Check_Browser(400, 490, 200, 50, "Battery 3");
+        md_battery3_broswer->align(FL_ALIGN_LEFT);
+
+        md_name = new Fl_Input(100, 10, 200, 25, "Name:");
+        md_name->align(FL_ALIGN_LEFT);
+
+        md_part_number = new Fl_Input(100, 40, 200, 25, "Part Number:");
         md_part_number->align(FL_ALIGN_LEFT);
 
-        md_type = new Fl_Input(120, 70, 210, 25, "Type:");
-        md_type->align(FL_ALIGN_LEFT);
-
-        md_weight = new Fl_Input(120, 100, 210, 25, "Weight:");
-        md_weight->align(FL_ALIGN_LEFT);
-
-        md_cost = new Fl_Input(120, 130, 210, 25, "Cost:");
+        md_cost = new Fl_Input(100, 70, 200, 25, "Cost:");
         md_cost->align(FL_ALIGN_LEFT);
-
-        md_description = new Fl_Multiline_Input(120, 160, 210, 75, "Description:");
-        md_description->align(FL_ALIGN_LEFT);
 
         md_create = new Fl_Return_Button(340, 570, 120, 25, "Create");
         md_create->callback((Fl_Callback *) create_robot_modelCB, 0);
 
         md_cancel = new Fl_Button(530, 570, 60, 25, "Cancel");
         md_cancel->callback((Fl_Callback *) cancel_robot_modelCB, 0);
+
+
+        md_refresh = new Fl_Button(465, 570, 60, 25, "Refresh");
+        md_refresh->callback((Fl_Callback *) refresh_robot_modelCB , 0);
+
 
         dialog->end();
         dialog->set_non_modal();
@@ -282,15 +313,20 @@ void cancel_robot_partCB(Fl_Widget* w, void* p){
 
 };
 void refresh_robot_modelCB(Fl_Widget* w, void* p) {
-    ///
-    ///
-    ///
+
     //Fl_Check_Browser *md_parts = (Fl_Check_Browser*)w;
     robot_model_dlg->hide();
-    md_parts->clear();
+    md_torso_broswer->clear();
+    md_head_broswer->clear();
+    md_arm1_broswer->clear();
+    md_arm2_broswer->clear();
+    md_locomotor_broswer->clear();
+    md_battery1_broswer->clear();
+    md_battery2_broswer->clear();
+    md_battery3_broswer->clear();
+
     char* q;
     string s;
-
 
     for (Torso t: shop.torsos())
     {
@@ -299,8 +335,25 @@ void refresh_robot_modelCB(Fl_Widget* w, void* p) {
         char* c = new char[s.size()+1];
         std::copy(s.begin(), s.end(), c);
         c[s.size()] = '\0';
-        md_parts->add(c);
+        md_torso_broswer->add(c);
     }
+
+    for (Arm a: shop.arms()){
+        cout << a << endl;
+    }
+
+    for (Head h: shop.heads()){
+        cout << h << endl;
+    }
+
+    for (Locomotor l: shop.locomotors()){
+        cout << l << endl;
+    }
+
+    for (Battery b: shop.batteries()){
+        cout << b << endl;
+    }
+
     robot_model_dlg->show();
 
 };
