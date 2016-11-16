@@ -325,33 +325,50 @@ void refresh_robot_modelCB(Fl_Widget* w, void* p) {
     md_battery2_broswer->clear();
     md_battery3_broswer->clear();
 
-    char* q;
+    char* c;
     string s;
 
     for (Torso t: shop.torsos())
     {
         cout << t << endl;
         s = t.to_string();
-        char* c = new char[s.size()+1];
+        c = controller.get_charstar(s);
+        md_torso_broswer->add(c);
+        /*char* c = new char[s.size()+1];
         std::copy(s.begin(), s.end(), c);
         c[s.size()] = '\0';
-        md_torso_broswer->add(c);
+        */
     }
 
     for (Arm a: shop.arms()){
         cout << a << endl;
+        s = a.to_string();
+        c = controller.get_charstar(s);
+        md_arm1_broswer->add(c);
+        md_arm2_broswer->add(c);
     }
 
     for (Head h: shop.heads()){
         cout << h << endl;
+        s = h.to_string();
+        c = controller.get_charstar(s);
+        md_head_broswer->add(c);
     }
 
     for (Locomotor l: shop.locomotors()){
         cout << l << endl;
+        s = l.to_string();
+        c = controller.get_charstar(s);
+        md_locomotor_broswer->add(c);
     }
 
     for (Battery b: shop.batteries()){
         cout << b << endl;
+        s = b.to_string();
+        c = controller.get_charstar(s);
+        md_battery1_broswer->add(c);
+        md_battery2_broswer->add(c);
+        md_battery3_broswer->add(c);
     }
 
     robot_model_dlg->show();

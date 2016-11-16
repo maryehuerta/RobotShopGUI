@@ -37,17 +37,12 @@ using namespace std;
 
 
 
-char* Controller::get_torso(int i){
-    string s;
-    for (Torso t: shop.torsos())
-    {
-        cout << t << endl;
-        s = t.to_string();
-        char* c = new char[s.size()+1];
-        std::copy(s.begin(), s.end(), c);
-        c[s.size()] = '\0';
-        return c;
-    }
+char* Controller::get_charstar(string s){
+
+    char* c = new char[s.size()+1];
+    std::copy(s.begin(), s.end(), c);
+    c[s.size()] = '\0';
+    return c;
 }
 
 int Controller::get_int(string prompt) {

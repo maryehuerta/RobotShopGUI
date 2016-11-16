@@ -88,7 +88,7 @@ class Controller {
                         robot_part_dlg->cost(), 100,  robot_part_dlg->description()) ;*/
     int get_int(string prompt);
     double get_double(string prompt);
-    char* get_torso(int i);
+    char* get_charstar(string s);
     /*
     void main_menu();
 
