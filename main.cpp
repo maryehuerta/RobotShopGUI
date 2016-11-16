@@ -43,6 +43,8 @@
 #include <iostream>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Check_Browser.H>
+#include <sstream>
+#include <string>
 using namespace std;
 
 
@@ -67,6 +69,7 @@ Robot_Part_Dialog *robot_part_dlg; // The dialog of interest!
 Robot_Model_Dialog *robot_model_dlg;
 Shop shop{"Robbie Robot Shop"};
 Controller controller(shop);
+
 Fl_Check_Browser* md_torso_broswer;
 Fl_Check_Browser* md_head_broswer;
 Fl_Check_Browser* md_arm1_broswer;
@@ -187,6 +190,7 @@ public:
 
 
         //Created for testing
+        shop.create_battery("None", "0", 0, 0, 0, "n/a" );
         shop.create_battery("B1", "3", 5.3, 10.99, 2, "The battery like no other" );
         shop.create_battery("Blue8000", "3", 5.3, 10.99, 80, "This battery has tons of power" );
         shop.create_head("TheHead", "51", 12.1, 10.99, "Robot head with lights");
@@ -199,7 +203,8 @@ public:
         shop.create_torso("Timmy's Torso", "1", 3.1, 3.99, 3, "This is a hard out shell of a torso");
         shop.create_torso("BaseCamp", "300", 30.1, 30.39, 1, "Toughest most reliable torso on the robot black market");
 
-        dialog = new Fl_Window(610, 600, "Robot Model");
+        dialog = new Fl_Window(610, 600, "Create a Robot Model");
+
 
         md_torso_broswer = new Fl_Check_Browser(400, 10, 200, 50, "Torso");
         md_torso_broswer->align(FL_ALIGN_LEFT);
@@ -324,7 +329,6 @@ void cancel_robot_partCB(Fl_Widget* w, void* p){
 };
 void refresh_robot_modelCB(Fl_Widget* w, void* p) {
 
-    //Fl_Check_Browser *md_parts = (Fl_Check_Browser*)w;
     robot_model_dlg->hide();
     md_torso_broswer->clear();
     md_head_broswer->clear();
@@ -371,14 +375,17 @@ void refresh_robot_modelCB(Fl_Widget* w, void* p) {
         c = controller.get_charstar(s);
         md_locomotor_broswer->add(c);
     }
-
+    int bnum = 0;
     for (Battery b: shop.batteries()){
         cout << b << endl;
         s = b.to_string();
+        //s = to_string(b);
         c = controller.get_charstar(s);
-        md_battery1_broswer->add(c);
+        if (bnum > 0) {md_battery1_broswer->add(c);}
         md_battery2_broswer->add(c);
         md_battery3_broswer->add(c);
+        bnum++;
+
     }
 
     robot_model_dlg->show();

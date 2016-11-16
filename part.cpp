@@ -38,4 +38,4 @@ double Robot_part::weight() const {return _weight;}
 double Robot_part::cost() const {return _cost;}
 string Robot_part::description() const {return _description;}
 
-string Robot_part::to_string() const {return _name + " (PN " + _part_number + ")";}
+string Robot_part::to_string() const {return _name + " (PN " + _part_number + ")" ;}
