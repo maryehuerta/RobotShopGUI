@@ -83,7 +83,6 @@ class Controller {
     /// GUI
     ///
 
-    void torsos_create(string name, string part_number, double weight, double cost, string ship, string despcription);
     /*shop.create_arm(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
                         robot_part_dlg->cost(), 100,  robot_part_dlg->description()) ;*/
     int get_int(string prompt);

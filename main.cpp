@@ -263,23 +263,33 @@ public:
 
     string part_number() { return md_part_number->value(); }
 
-    string type() { return md_type->value(); }
-
-    double weight() { return atof(md_weight->value()); }
-
     double cost() { return atof(md_cost->value()); }
 
-    string description() { return md_description->value(); }
+    int torso_num() { return md_torso_broswer->value();}
+
+    int head_num() { return md_head_broswer->value();}
+
+    int arm1_num() { return md_arm1_broswer->value();}
+
+    int arm2_num() { return md_arm2_broswer->value();}
+
+    int locomotor_num() { return md_locomotor_broswer->value();}
+
+    int battery1_num() { return md_battery1_broswer->value();}
+
+    int battery2_num() { return md_battery2_broswer->value();}
+
+    int battery3_num() { return md_battery3_broswer->value();}
+
+
 
 private:
     Fl_Window *dialog;
     //Fl_Check_Browser *md_parts;
     Fl_Input *md_name;
     Fl_Input *md_part_number;
-    Fl_Input *md_type;
-    Fl_Input *md_weight;
     Fl_Input *md_cost;
-    Fl_Input *md_description;
+
     Fl_Return_Button *md_create;
     Fl_Button *md_cancel;
     Fl_Button *md_refresh;
@@ -378,7 +388,19 @@ void refresh_robot_modelCB(Fl_Widget* w, void* p) {
 
 void create_robot_modelCB(Fl_Widget* w, void* p) { // Replace with call to model!
 
+
     cout << "Robot Model Created " << endl;
+    shop.create_model(robot_model_dlg->name(),
+                      robot_model_dlg->part_number(),
+                      robot_model_dlg->cost(),
+                      shop.torsos()[robot_model_dlg->torso_num()],
+                      shop.heads()[robot_model_dlg->head_num()],
+                      shop.arms()[robot_model_dlg->arm1_num()],
+                      shop.arms()[robot_model_dlg->arm2_num()],
+                      shop.locomotors()[robot_model_dlg->locomotor_num()],
+                      shop.batteries()[robot_model_dlg->battery1_num()],
+                      shop.batteries()[robot_model_dlg->battery2_num()],
+                      shop.batteries()[robot_model_dlg->battery3_num()]);
     Fl::redraw();
     robot_model_dlg->hide();
 
