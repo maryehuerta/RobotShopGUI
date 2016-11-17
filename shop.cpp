@@ -75,8 +75,8 @@ vector<Torso> Shop::torsos() const {return _torsos;}
 // Robot model management
 //
 void Shop::create_model(string name, string part_number, double price,
-            Torso& torso, Head& head, Arm& arm1, Arm& arm2, Locomotor& locomotor,
-            Battery& battery1, Battery& battery2, Battery& battery3) {
+            int torso, int head, int arm1, int arm2, int locomotor,
+            int battery1, int battery2, int battery3) {
     _models.push_back(Robot_model{name, part_number, price,
             torso, head, arm1, arm2, locomotor,
             battery1, battery2, battery3});

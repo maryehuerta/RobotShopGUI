@@ -55,6 +55,23 @@ double Controller::get_double(string prompt) {
     return atof(s.c_str());
 }
 
+double Controller::get_total_parts_cost(int torso_num, int head_num, int arm1_num, int arm2_num, int locomotor_num,
+                                        int bat1_num, int bat2_num, int bat3_num){
+    double total;
+
+    total = shop.torsos()[torso_num].cost() +
+            shop.heads()[head_num].cost() +
+            shop.arms()[arm1_num].cost() +
+            shop.arms()[arm2_num].cost() +
+            shop.locomotors()[locomotor_num].cost() +
+            shop.batteries()[bat1_num].cost() +
+            shop.batteries()[bat2_num].cost() +
+            shop.batteries()[bat3_num].cost() ;
+    return total;
+
+}
+
+
 /*
 void Controller::main_menu() {
   cout << endl;
