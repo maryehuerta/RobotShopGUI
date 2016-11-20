@@ -73,8 +73,8 @@ class Shop {
         // Robot model management
         //
         void create_model(string name, string part_number, double price,
-                    Torso& torso, Head& head, Arm& arm1, Arm& arm2, Locomotor& locomotor,
-                    Battery& battery1, Battery& battery2, Battery& battery3);
+                    int torso, int head, int arm1, int arm2, int locomotor,
+                    int battery1, int battery2, int battery3);
         vector<Robot_model> models() const;
 
         //
@@ -89,7 +89,7 @@ class Shop {
         // Order management
         //
         void create_order(string order_number, string date_of_sale,
-                    Robot_model& model, Customer& customer, Sales_associate& sales_associate);
+                    int model,int customer, int sales_associate);
         vector<Order> orders() const;
 
         //

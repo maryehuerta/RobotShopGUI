@@ -41,7 +41,7 @@ using namespace std;
 class Order {
     public:
         Order(string order_number, string date_of_sale, 
-                    Robot_model& model, Customer& customer, Sales_associate& sales_associate)
+                    int model, int customer, int sales_associate)
             : _order_number{order_number}, _date_of_sale{date_of_sale},
               _model{model}, _customer{customer}, _sales_associate{sales_associate} { }
               
@@ -50,20 +50,20 @@ class Order {
 
         string order_number() const;
         string date_of_sale() const;
-        Robot_model& model() const;
-        Customer& customer() const;
-        Sales_associate& sales_associate() const;
-        double subtotal() const;
-        double sales_tax() const;
-        double total_price() const;
+        int model() const;
+        int customer() const;
+        int sales_associate() const;
+        //double subtotal() const;
+        //double sales_tax() const;
+        //double total_price() const;
 
         string to_string() const;  // returns short text of a robot model
         friend ostream& operator<<(ostream& os, const Order& model);
     protected:
         string _order_number;
         string _date_of_sale;
-        Robot_model& _model; 
-        Customer& _customer;
-        Sales_associate& _sales_associate;
+        int _model;
+        int _customer;
+        int _sales_associate;
 };
 #endif

@@ -43,22 +43,22 @@ using namespace std;
 class Robot_model {
     public:
         Robot_model(string name, string part_number, double price,
-                    Torso& torso, Head& head, Arm& arm1, Arm& arm2, Locomotor& locomotor,
-                    Battery& battery1, Battery& battery2, Battery& battery3)
+                    int torso_num, int head_num, int arm1_num, int arm2_num, int locomotor_num,
+                    int battery1_num,int battery2_num, int battery3_num)
             : _name{name}, _part_number{part_number}, _price{price},
-              _torso{torso}, _head{head}, _arm1{arm1}, _arm2{arm2}, _locomotor{locomotor},
-              _battery1{battery1}, _battery2{battery2}, _battery3{battery3} { }
+              _torso{torso_num}, _head{head_num}, _arm1{arm1_num}, _arm2{arm2_num}, _locomotor{locomotor_num},
+              _battery1{battery1_num}, _battery2{battery2_num}, _battery3{battery3_num} { }
         string name() const;
         string part_number() const;
         double price() const;
-        Torso& torso() const;
-        Head& head() const;
-        Arm& arm1() const;
-        Arm& arm2() const;
-        Locomotor& locomotor() const;
-        Battery& battery1() const;
-        Battery& battery2() const;
-        Battery& battery3() const;
+        int torso() const;
+        int head() const;
+        int arm1() const;
+        int arm2() const;
+        int locomotor() const;
+        int battery1() const;
+        int battery2() const;
+        int battery3() const;
         double parts_cost() const;
         string to_string() const;  // returns short text of a robot model
         friend ostream& operator<<(ostream& os, const Robot_model& model);
@@ -66,13 +66,13 @@ class Robot_model {
         string _name;
         string _part_number;
         double _price;
-        Torso& _torso; 
-        Head& _head;
-        Arm& _arm1;
-        Arm& _arm2;
-        Locomotor& _locomotor;
-        Battery& _battery1;
-        Battery& _battery2;
-        Battery& _battery3;
+        int _torso;
+        int _head;
+        int _arm1;
+        int _arm2;
+        int _locomotor;
+        int _battery1;
+        int _battery2;
+        int _battery3;
 };
 #endif

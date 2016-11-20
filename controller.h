@@ -88,27 +88,30 @@ class Controller {
     int get_int(string prompt);
     double get_double(string prompt);
     char* get_charstar(string s);
-    /*
-    void main_menu();
+    double get_total_parts_cost(int torso_num, int head_num, int arm1_num, int arm2_num, int locomotor_num,
+                                            int bat1_num, int bat2_num, int bat3_num);
+
+        /*
+        void main_menu();
 
 
 
-    string get_string(string prompt);
-    int get_int(string prompt);
-    double get_double(string prompt);
+        string get_string(string prompt);
+        int get_int(string prompt);
+        double get_double(string prompt);
 
-    Customer& get_customer(string prompt);
-    Sales_associate& get_sa(string prompt);
-    Robot_model& get_model(string prompt);
-    Torso& get_torso(string prompt);
-    Arm& get_arm(string prompt);
-    Head& get_head(string prompt);
-    Locomotor& get_locomotor(string prompt);
-    Battery& get_battery(string prompt);
+        Customer& get_customer(string prompt);
+        Sales_associate& get_sa(string prompt);
+        Robot_model& get_model(string prompt);
+        Torso& get_torso(string prompt);
+        Arm& get_arm(string prompt);
+        Head& get_head(string prompt);
+        Locomotor& get_locomotor(string prompt);
+        Battery& get_battery(string prompt);
 
-    void cli();
-    void execute_cmd(int cmd);
-    */
+        void cli();
+        void execute_cmd(int cmd);
+        */
 
 
   private:

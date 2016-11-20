@@ -75,8 +75,8 @@ vector<Torso> Shop::torsos() const {return _torsos;}
 // Robot model management
 //
 void Shop::create_model(string name, string part_number, double price,
-            Torso& torso, Head& head, Arm& arm1, Arm& arm2, Locomotor& locomotor,
-            Battery& battery1, Battery& battery2, Battery& battery3) {
+            int torso, int head, int arm1, int arm2, int locomotor,
+            int battery1, int battery2, int battery3) {
     _models.push_back(Robot_model{name, part_number, price,
             torso, head, arm1, arm2, locomotor,
             battery1, battery2, battery3});
@@ -100,7 +100,7 @@ vector<Sales_associate> Shop::sales_associates() const {return _sales_associates
 // Order management
 //
 void Shop::create_order(string order_number, string date_of_sale,
-            Robot_model& model, Customer& customer, Sales_associate& sales_associate) {
+            int model, int customer, int sales_associate) {
     _orders.push_back(Order{order_number, date_of_sale,
             model, customer, sales_associate});
 }

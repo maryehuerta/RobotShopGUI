@@ -48,27 +48,52 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <iomanip>
+//#include <FL/Fl_Shared_Image.H>
+#include <FL/Fl_JPEG_Image.H>
+
+
 
 using namespace std;
 
 
 //
-// Declarations (we'll define later, just need to declare some variables!)
+// Declarations
 //
 void create_robot_partCB(Fl_Widget* w, void* p);
 void cancel_robot_partCB(Fl_Widget* w, void* p);
 void create_robot_modelCB(Fl_Widget* w, void *p);
 void cancel_robot_modelCB(Fl_Widget* w, void* p);
+void create_customerCB(Fl_Widget* w, void *p);
+void cancel_customerCB(Fl_Widget* w, void *p);
+void create_salesCB(Fl_Widget* w, void* p);
+void cancel_salesCB(Fl_Widget* w, void *p);
+void create_ordersCB(Fl_Widget* w, void* p);
+void cancel_ordersCB(Fl_Widget* w, void *p);
+
+void refresh_ordersCB(Fl_Widget* w, void* p);
 void refresh_robot_modelCB(Fl_Widget* w, void* p);
 void okay_report_partsCB(Fl_Widget* w, void* p);
 void refresh_report_partsCB(Fl_Widget* w, void* p);
 void okay_report_modelsCB(Fl_Widget* w, void* p);
+void okay_report_customersCB(Fl_Widget* w, void* p);
 void refresh_report_modelsCB(Fl_Widget* w, void* p);
+void refresh_report_customersCB(Fl_Widget* w, void* p);
+void refresh_report_salesCB(Fl_Widget* w, void* p);
+void okay_report_salesCB(Fl_Widget* w, void* p);
+void refresh_report_ordersCB(Fl_Widget* w, void* p);
+void okay_report_ordersCB(Fl_Widget* w, void* p);
 
 class Robot_Part_Dialog;
 class Robot_Model_Dialog;
 class Report_All_Parts_Dialog;
 class Report_All_Models_Dialog;
+class Report_All_Customers_Dialog;
+class Report_All_Sales_Dialog;
+class Report_All_Orders_Dialog;
+class Customer_Dialog;
+class Sales_Dialog;
+class Orders_Dialog;
 //güd
 //
 // Widgets
@@ -80,6 +105,12 @@ Robot_Part_Dialog *robot_part_dlg;
 Robot_Model_Dialog *robot_model_dlg;
 Report_All_Parts_Dialog *report_all_parts_dlg;
 Report_All_Models_Dialog *report_all_models_dlg;
+Customer_Dialog *customer_dlg;
+Report_All_Customers_Dialog *report_all_customers_dlg;
+Sales_Dialog *sales_dlg;
+Report_All_Sales_Dialog *report_all_sales_dlg;
+Orders_Dialog *orders_dlg;
+Report_All_Orders_Dialog *report_all_orders_dlg;
 
 Shop shop{"Robbie Robot Shop"};
 Controller controller(shop);
@@ -96,13 +127,16 @@ Fl_Check_Browser* md_battery3_broswer;
 Fl_Check_Browser* rt_torso_broswer;
 Fl_Check_Browser* rt_head_broswer;
 Fl_Check_Browser* rt_arm1_broswer;
-Fl_Check_Browser* rt_arm2_broswer;
 Fl_Check_Browser* rt_locomotor_broswer;
 Fl_Check_Browser* rt_battery1_broswer;
-Fl_Check_Browser* rt_battery2_broswer;
-Fl_Check_Browser* rt_battery3_broswer;
-Fl_Browser* rt_models;
 
+Fl_Browser* rt_models;
+Fl_Browser* customers_broswer;
+Fl_Browser* sales_broswer;
+Fl_Browser* orders_broswer;
+Fl_Check_Browser* od_models;
+Fl_Check_Browser* od_customers;
+Fl_Check_Browser* od_sales;
 //
 // Robot Part dialog
 //
@@ -110,6 +144,20 @@ Fl_Browser* rt_models;
 class Robot_Part_Dialog {
 public:
     Robot_Part_Dialog() {
+
+
+        shop.create_battery("B1", "3", 5.3, 10.99, 2, "The battery like no other" );
+        shop.create_battery("Blue8000", "3", 5.3, 10.99, 80, "This battery has tons of power" );
+        shop.create_head("TheHead", "51", 12.1, 10.99, "Robot head with lights");
+        shop.create_head("V2", "11", 11.1, 15.99, "Robot head that is sturdy");
+        shop.create_arm("Army", "4", 1.1, 2.99, 1, "It's an arm with flare");
+        shop.create_arm("Lefty", "2", 2.1, 3.99, 2, "A left arm that can rotate");
+        shop.create_arm("Righty", "1", 2.1, 2.99, 1, "A right arm that can't rotate");
+        shop.create_locomotor("Loco's Motors", "22", 8.4, 11.95, 5, 2, "This will get your robot far");
+        shop.create_locomotor("Motor541", "22", 1.1, 10.00, 2, 1, "caution prone to fires");
+        shop.create_torso("Timmy's Torso", "1", 3.1, 3.99, 3, "This is a hard out shell of a torso");
+        shop.create_torso("BaseCamp", "300", 30.1, 30.39, 1, "Toughest most reliable torso on the robot black market");
+
         dialog = new Fl_Window(340, 270, "Robot Part");
 
         rp_name = new Fl_Input(120, 10, 210, 25, "Name:");
@@ -213,21 +261,10 @@ public:
 
         Fl::check();
 
+        shop.create_model("model", "12", 123.0, 0, 0,0,0,0,0,0,0);
+
 
         //Created for testing
-        shop.create_battery("None", "0", 0, 0, 0, "n/a" );
-        shop.create_battery("B1", "3", 5.3, 10.99, 2, "The battery like no other" );
-        shop.create_battery("Blue8000", "3", 5.3, 10.99, 80, "This battery has tons of power" );
-        shop.create_head("TheHead", "51", 12.1, 10.99, "Robot head with lights");
-        shop.create_head("V2", "11", 11.1, 15.99, "Robot head that is sturdy");
-        shop.create_arm("Army", "4", 1.1, 2.99, 1, "It's an arm with flare");
-        shop.create_arm("Lefty", "2", 2.1, 3.99, 2, "A left arm that can rotate");
-        shop.create_arm("Righty", "1", 2.1, 2.99, 1, "A right arm that can't rotate");
-        shop.create_locomotor("Loco's Motors", "22", 8.4, 11.95, 5, 2, "This will get your robot far");
-        shop.create_locomotor("Motor541", "22", 1.1, 10.00, 2, 1, "caution prone to fires");
-        shop.create_torso("Timmy's Torso", "1", 3.1, 3.99, 3, "This is a hard out shell of a torso");
-        shop.create_torso("BaseCamp", "300", 30.1, 30.39, 1, "Toughest most reliable torso on the robot black market");
-
         dialog = new Fl_Window(610, 600, "Create a Robot Model");
 
 
@@ -390,15 +427,15 @@ class Report_All_Models_Dialog {
 public:
     Report_All_Models_Dialog() {
         Fl::check();
-        dialog = new Fl_Window(700, 700, "Report All Parts");
+        dialog = new Fl_Window(700, 200, "Report All Models");
 
         rt_models = new Fl_Browser(80, 30, 600, 100, "Models");
         rt_models->align(FL_ALIGN_LEFT);
 
-        md_create = new Fl_Return_Button(370, 670, 120, 25, "Okay");
+        md_create = new Fl_Return_Button(450, 150, 120, 25, "Okay");
         md_create->callback((Fl_Callback *) okay_report_modelsCB, 0);
 
-        md_refresh = new Fl_Button(495, 670, 60, 25, "Refresh");
+        md_refresh = new Fl_Button(575, 150, 60, 25, "Refresh");
         md_refresh->callback((Fl_Callback *) refresh_report_modelsCB , 0);
 
         dialog->end();
@@ -415,43 +452,277 @@ private:
 
 };
 
+class Customer_Dialog { //Name address phone number email address
+public:
+    Customer_Dialog() {
+
+        dialog = new Fl_Window(340, 270, "Customer");
+
+        bc_name = new Fl_Input(120, 10, 210, 25, "Name:");
+        bc_name->align(FL_ALIGN_LEFT);
+
+        bc_address = new Fl_Input(120, 40, 210, 25, "Address:");
+        bc_address->align(FL_ALIGN_LEFT);
+
+        bc_phonenumber = new Fl_Input(120, 70, 210, 25, "Phone:");
+        bc_phonenumber->align(FL_ALIGN_LEFT);
+
+        bc_emailaddress = new Fl_Input(120, 100, 210, 25, "Email:");
+        bc_emailaddress->align(FL_ALIGN_LEFT);
+
+        rp_create = new Fl_Return_Button(145, 240, 120, 25, "Create");
+        rp_create->callback((Fl_Callback *)create_customerCB, 0);
+
+        rp_cancel = new Fl_Button(270, 240, 60, 25, "Cancel");
+        rp_cancel->callback((Fl_Callback *)cancel_customerCB, 0);
+
+        dialog->end();
+        dialog->set_non_modal();
+    }
+
+    void show() {dialog->show();}
+    void hide() {dialog->hide();}
+    string name() {return bc_name->value();}
+    string adress() {return bc_address->value();}
+
+    string phonenumber() {return bc_phonenumber->value();}
+    string emailadress() {return bc_emailaddress->value();}
+
+private:
+    Fl_Window *dialog;
+    Fl_Input *bc_name;
+    Fl_Input *bc_address;
+    Fl_Input *bc_phonenumber;
+    Fl_Input *bc_emailaddress;
+
+    Fl_Return_Button *rp_create;
+    Fl_Button *rp_cancel;
+};
+
+class Report_All_Customers_Dialog {
+public:
+    Report_All_Customers_Dialog() {
+        Fl::check();
+        dialog = new Fl_Window(700, 200, "Report All Customers");
+
+        customers_broswer = new Fl_Browser(80, 30, 600, 100, "Customers");
+        customers_broswer->align(FL_ALIGN_LEFT);
+
+        md_create = new Fl_Return_Button(450, 150, 120, 25, "Okay");
+        md_create->callback((Fl_Callback *) okay_report_customersCB, 0);
+
+        md_refresh = new Fl_Button(575, 150, 60, 25, "Refresh");
+        md_refresh->callback((Fl_Callback *) refresh_report_customersCB , 0);
+
+        dialog->end();
+        dialog->set_non_modal();
+    }
+
+    void show() { dialog->show(); }
+    void hide() { dialog->hide(); }
+
+private:
+    Fl_Window *dialog;
+    Fl_Return_Button *md_create;
+    Fl_Button *md_refresh;
+
+};
+
+class Sales_Dialog { //Name address phone number email address
+public:
+    Sales_Dialog() {
+
+        dialog = new Fl_Window(340, 270, "Sales Associate");
+
+        sa_name = new Fl_Input(120, 10, 210, 25, "Name:");
+        sa_name->align(FL_ALIGN_LEFT);
+
+        sa_number = new Fl_Input(120, 40, 210, 25, "Number:");
+        sa_number->align(FL_ALIGN_LEFT);
+
+        rp_create = new Fl_Return_Button(145, 240, 120, 25, "Create");
+        rp_create->callback((Fl_Callback *)create_salesCB, 0);
+
+        rp_cancel = new Fl_Button(270, 240, 60, 25, "Cancel");
+        rp_cancel->callback((Fl_Callback *)cancel_salesCB, 0);
+
+        dialog->end();
+        dialog->set_non_modal();
+    }
+
+    void show() {dialog->show();}
+    void hide() {dialog->hide();}
+    string name() {return sa_name->value();}
+    string number() {return sa_number->value();}
+
+
+private:
+    Fl_Window *dialog;
+    Fl_Input *sa_name;
+    Fl_Input *sa_number;
+
+
+    Fl_Return_Button *rp_create;
+    Fl_Button *rp_cancel;
+};
+
+class Report_All_Sales_Dialog {
+public:
+    Report_All_Sales_Dialog() {
+        Fl::check();
+        dialog = new Fl_Window(700, 200, "Report All Sales Associates");
+
+        sales_broswer = new Fl_Browser(80, 30, 600, 100, "Sales\nAssociates");
+        sales_broswer->align(FL_ALIGN_LEFT);
+
+        md_create = new Fl_Return_Button(450, 150, 120, 25, "Okay");
+        md_create->callback((Fl_Callback *) okay_report_salesCB, 0);
+
+        md_refresh = new Fl_Button(575, 150, 60, 25, "Refresh");
+        md_refresh->callback((Fl_Callback *) refresh_report_salesCB , 0);
+
+        dialog->end();
+        dialog->set_non_modal();
+    }
+
+    void show() { dialog->show(); }
+    void hide() { dialog->hide(); }
+
+private:
+    Fl_Window *dialog;
+    Fl_Return_Button *md_create;
+    Fl_Button *md_refresh;
+
+};
+
+class Report_All_Orders_Dialog {
+public:
+    Report_All_Orders_Dialog() {
+        Fl::check();
+        dialog = new Fl_Window(700, 200, "Report All Orders");
+
+        orders_broswer = new Fl_Browser(80, 30, 600, 100, "Orders");
+        orders_broswer->align(FL_ALIGN_LEFT);
+
+        md_create = new Fl_Return_Button(450, 150, 120, 25, "Okay");
+        md_create->callback((Fl_Callback *) okay_report_ordersCB, 0);
+
+        md_refresh = new Fl_Button(575, 150, 60, 25, "Refresh");
+        md_refresh->callback((Fl_Callback *) refresh_report_ordersCB , 0);
+
+        dialog->end();
+        dialog->set_non_modal();
+    }
+
+    void show() { dialog->show(); }
+    void hide() { dialog->hide(); }
+
+private:
+    Fl_Window *dialog;
+    Fl_Return_Button *md_create;
+    Fl_Button *md_refresh;
+
+};
+
+
+class Orders_Dialog {
+public:
+    Orders_Dialog() {
+
+
+        Fl::check();
+
+        //Created for testing
+        dialog = new Fl_Window(610, 600, "Create an Order");
+
+        od_customers = new Fl_Check_Browser(400, 10, 200, 50, "Customers");
+        od_customers->align(FL_ALIGN_LEFT);
+
+        od_models = new Fl_Check_Browser(400, 70, 200, 50, "Models");
+        od_models->align(FL_ALIGN_LEFT);
+
+
+        od_sales= new Fl_Check_Browser(400, 140, 200, 50, "Sales\nAssociates");
+        od_sales->align(FL_ALIGN_LEFT);
+
+        od_number = new Fl_Input(100, 10, 200, 25, "Order Number:");
+        od_number->align(FL_ALIGN_LEFT);
+
+        od_date = new Fl_Input(100, 40, 200, 25, "Date:");
+        od_date->align(FL_ALIGN_LEFT);
+
+        md_create = new Fl_Return_Button(340, 570, 120, 25, "Create");
+        md_create->callback((Fl_Callback *) create_ordersCB, 0);
+
+        md_cancel = new Fl_Button(530, 570, 60, 25, "Cancel");
+        md_cancel->callback((Fl_Callback *) cancel_ordersCB, 0);
+
+
+        md_refresh = new Fl_Button(465, 570, 60, 25, "Refresh");
+        md_refresh->callback((Fl_Callback *) refresh_ordersCB , 0);
+
+
+        dialog->end();
+        dialog->set_non_modal();
+    }
+
+    void show() { dialog->show(); }
+
+    void hide() { dialog->hide(); }
+
+    string number() { return od_number->value(); }
+
+    string date() { return od_date->value(); }
+
+    int model_num() { return od_models->value();}
+
+    int sales_num() { return od_sales->value();}
+
+    int customer_num() { return od_customers->value();}
+
+
+private:
+    Fl_Window *dialog;
+    Fl_Input *od_number;
+    Fl_Input *od_date;
+
+    Fl_Return_Button *md_create;
+    Fl_Button *md_cancel;
+    Fl_Button *md_refresh;
+
+};
+
 //
-// Callbacks
+/// Callbacks
 //
 
 void CB(Fl_Widget* w, void* p) { } // No action
 
-void menu_create_robot_partCB(Fl_Widget* w, void* p) {
-    robot_part_dlg->show();
-}
+void menu_create_robot_partCB(Fl_Widget* w, void* p) { robot_part_dlg->show(); }
+void menu_create_customerCB(Fl_Widget* w, void* p) { customer_dlg->show(); }
+void menu_create_robot_modelCB(Fl_Widget* w, void* p) { robot_model_dlg->show(); }
+void menu_create_salesCB(Fl_Widget* w, void* p) { sales_dlg->show(); }
+void menu_create_orderCB(Fl_Widget* w, void* p) { orders_dlg->show(); }
 
-void menu_create_robot_modelCB(Fl_Widget* w, void* p) {
-    robot_model_dlg->show();
-}
+void menu_report_robot_partsCB(Fl_Widget* w, void* p) { report_all_parts_dlg->show(); }
+void menu_report_robot_modelsCB(Fl_Widget* w, void* p) { report_all_models_dlg->show(); }
+void menu_report_customersCB(Fl_Widget* w, void *p) { report_all_customers_dlg->show(); }
+void menu_report_salesCB(Fl_Widget* w, void* p) { report_all_sales_dlg->show(); }
+void menu_report_ordersCB(Fl_Widget* w, void* p) { report_all_orders_dlg->show(); }
 
-void menu_report_robot_partsCB(Fl_Widget* w, void* p) {
-    report_all_parts_dlg->show();
-}
-void okay_report_partsCB(Fl_Widget* w, void* p) {
-    report_all_parts_dlg->hide();
-}
+void okay_report_modelsCB(Fl_Widget* w, void* p) { report_all_models_dlg->hide(); }
+void okay_report_partsCB(Fl_Widget* w, void* p) { report_all_parts_dlg->hide(); }
+void okay_report_customersCB(Fl_Widget* w, void* p) { report_all_customers_dlg->hide(); }
+void okay_report_salesCB(Fl_Widget* w, void* p) { report_all_sales_dlg->hide(); }
+void okay_report_ordersCB(Fl_Widget* w, void* p) { report_all_orders_dlg->hide(); }
 
-void menu_report_robot_modelsCB(Fl_Widget* w, void* p) {
-    report_all_models_dlg->show();
-}
-void okay_report_modelsCB(Fl_Widget* w, void* p) {
-    report_all_models_dlg->hide();
-}
-
-void cancel_robot_modelCB(Fl_Widget* w, void* p) {
-    robot_model_dlg->hide();
-}
-
-void cancel_robot_partCB(Fl_Widget* w, void* p){
-    robot_part_dlg->hide();
+void cancel_robot_modelCB(Fl_Widget* w, void* p) { robot_model_dlg->hide(); }
+void cancel_robot_partCB(Fl_Widget* w, void* p){ robot_part_dlg->hide();  }
+void cancel_customerCB(Fl_Widget* w, void* p) { customer_dlg->hide(); }
+void cancel_salesCB(Fl_Widget* w, void* p) { sales_dlg->hide(); }
+void cancel_ordersCB(Fl_Widget* w, void* p) { orders_dlg->hide(); }
 
 
-};
 void refresh_robot_modelCB(Fl_Widget* w, void* p) {
 
 
@@ -471,19 +742,9 @@ void refresh_robot_modelCB(Fl_Widget* w, void* p) {
     for (Torso t: shop.torsos())
     {
         cout << t << endl;
-
-        //std::string s;
-        //std::ostringstream os;
-        //os<<t;
-        //s=os.str();
-
         s = t.to_string();
         c = controller.get_charstar(s);
         md_torso_broswer->add(c);
-        /*char* c = new char[s.size()+1];
-        std::copy(s.begin(), s.end(), c);
-        c[s.size()] = '\0';
-        */
     }
 
     for (Arm a: shop.arms()){
@@ -514,7 +775,7 @@ void refresh_robot_modelCB(Fl_Widget* w, void* p) {
         s = b.to_string();
         //s = to_string(b);
         c = controller.get_charstar(s);
-        if (bnum > 0) {md_battery1_broswer->add(c);}
+        md_battery1_broswer->add(c);
         md_battery2_broswer->add(c);
         md_battery3_broswer->add(c);
         bnum++;
@@ -535,15 +796,13 @@ void refresh_report_partsCB(Fl_Widget* w, void* p) {
     rt_locomotor_broswer->clear();
     rt_battery1_broswer->clear();
 
-
     char* c;
     string s;
     ostringstream os;
 
-
-
     for (Torso t: shop.torsos())
     {
+
         cout << t << endl;
         os<<t;
         s=os.str();
@@ -551,7 +810,7 @@ void refresh_report_partsCB(Fl_Widget* w, void* p) {
         c = controller.get_charstar(s);
         rt_torso_broswer->add(c);
         os.str("");
-        os.clear();
+        //os.clear();
     }
 
     for (Arm a: shop.arms()){
@@ -562,7 +821,7 @@ void refresh_report_partsCB(Fl_Widget* w, void* p) {
         c = controller.get_charstar(s);
         rt_arm1_broswer->add(c);
         os.str("");
-        os.clear();
+        //os.clear();
     }
 
     for (Head h: shop.heads()){
@@ -573,7 +832,7 @@ void refresh_report_partsCB(Fl_Widget* w, void* p) {
         c = controller.get_charstar(s);
         rt_head_broswer->add(c);
         os.str("");
-        os.clear();
+        //os.clear();
     }
 
     for (Locomotor l: shop.locomotors()){
@@ -584,25 +843,23 @@ void refresh_report_partsCB(Fl_Widget* w, void* p) {
         c = controller.get_charstar(s);
         rt_locomotor_broswer->add(c);
         os.str("");
-        os.clear();
+        //os.clear();
     }
-    int bnum = 0;
+
     for (Battery b: shop.batteries()){
         cout << b << endl;
         os << b;
         s = os.str();
         c = controller.get_charstar(s);
-        if (bnum > 0) {
-            rt_battery1_broswer->add(c);
 
-        }
+        rt_battery1_broswer->add(c);
+
         os.str("");
-        os.clear();
-        bnum++;
+
 
     }
 
-
+    os.clear();
 
     report_all_parts_dlg->show();
 
@@ -617,49 +874,189 @@ void refresh_report_modelsCB(Fl_Widget* w, void* p) {
     ostringstream os;
     for (Robot_model r: shop.models())
     {
+        cout << r << endl;
+        //s = r.to_string();
+        cout << r.arm1() << endl;
         //cout << r << endl;
-        s = r.to_string();
-        //cout << r << endl;
-        //os<<r;
-        //s=os.str();
+        os << r << setprecision(2) <<" parts cost $" <<
+                          controller.get_total_parts_cost
+                (r.torso(), r.head(), r.arm1(), r.arm2(), r.locomotor(),
+                 r.battery1(), r.battery2(), r.battery3())<< " | "
 
+                << (shop.torsos()[r.torso()]).to_string() << " | "
+                << (shop.heads()[r.head()]).to_string() << " | "
+                << (shop.arms()[r.arm1()]).to_string() << " | "
+                << (shop.arms()[r.arm2()]).to_string() << " | "
+                << (shop.locomotors()[r.locomotor()]).to_string() << " | "
+                << (shop.batteries()[r.battery1()]).to_string() << " | "
+                << (shop.batteries()[r.battery2()]).to_string() << " | "
+                << (shop.batteries()[r.battery3()]).to_string();
+
+        s=os.str();
         c = controller.get_charstar(s);
         rt_models->add(c);
-        //os.str("");
-        //os.clear();
+        os.str("");
     }
+
     report_all_models_dlg->show();
 
 }
 
+void refresh_report_customersCB(Fl_Widget* w, void* p) {
+    report_all_customers_dlg->hide();
+    customers_broswer->clear();
+
+    char* c;
+    string s;
+    ostringstream os;
+    for (Customer cu: shop.customers())
+    {
+        cout << cu << endl;
+        os << cu;
+        s = os.str();
+        c = controller.get_charstar(s);
+        customers_broswer->add(c);
+        os.str("");
+    }
+    report_all_customers_dlg->show();
+
+}
 
 void create_robot_modelCB(Fl_Widget* w, void* p) { // Replace with call to model!
 
-    cout << "### Creating robot model" << endl;
-    cout << "Name    : " << robot_model_dlg->name() << endl;
-    cout << "Part #  : " << robot_model_dlg->part_number() << endl;
-    cout << "Cost    : " << robot_model_dlg->cost() << endl;
-    cout << "TorsoNum   : " << robot_model_dlg->torso_num() << endl;
-
-    cout << "Robot Model Created " << endl;
     shop.create_model(robot_model_dlg->name(),
                       robot_model_dlg->part_number(),
                       robot_model_dlg->cost(),
-                      shop.torsos()[robot_model_dlg->torso_num()],
-                      shop.heads()[robot_model_dlg->head_num()],
-                      shop.arms()[robot_model_dlg->arm1_num()],
-                      shop.arms()[robot_model_dlg->arm2_num()],
-                      shop.locomotors()[robot_model_dlg->locomotor_num()],
-                      shop.batteries()[robot_model_dlg->battery1_num()],
-                      shop.batteries()[robot_model_dlg->battery2_num()],
-                      shop.batteries()[robot_model_dlg->battery3_num()]);
-    Fl::redraw();
+                      (robot_model_dlg->torso_num() - 1),
+                      (robot_model_dlg->head_num() - 1),
+                      (robot_model_dlg->arm1_num() - 1),
+                      (robot_model_dlg->arm2_num() - 1),
+                      (robot_model_dlg->locomotor_num() - 1),
+                      (robot_model_dlg->battery1_num() - 1),
+                      (robot_model_dlg->battery2_num() - 1),
+                      (robot_model_dlg->battery3_num() - 1 ));
+    Fl::check();
     robot_model_dlg->hide();
+}
+
+void create_customerCB(Fl_Widget* w, void* p) {
+
+    shop.create_customer(customer_dlg->name(), customer_dlg->phonenumber());
+
+    customer_dlg->hide();
+}
+
+void create_ordersCB(Fl_Widget* w, void* p) { // Replace with call to model!
+
+    shop.create_order(orders_dlg->number(), orders_dlg->date(), orders_dlg->model_num() -1,
+                         orders_dlg->customer_num() -1, orders_dlg->sales_num() -1 );
+    Fl::check();
+    orders_dlg->hide();
+}
+
+void create_salesCB(Fl_Widget* w, void* p) {
+
+    shop.create_sales_associate(sales_dlg->name(), sales_dlg->number());
+    sales_dlg->hide();
+}
+
+void refresh_report_salesCB(Fl_Widget* w, void* p) {
+
+    report_all_sales_dlg->hide();
+    sales_broswer->clear();
+
+    char* c;
+    string s;
+    ostringstream os;
+    for (Sales_associate sa: shop.sales_associates())
+    {
+        cout << sa << endl;
+        os << sa;
+        s = os.str();
+        c = controller.get_charstar(s);
+        sales_broswer->add(c);
+        os.str("");
+    }
+    report_all_sales_dlg->show();
+
+}
+
+void refresh_ordersCB(Fl_Widget* w, void* p) {
+
+
+    orders_dlg->hide();
+    od_customers->clear();
+    od_models->clear();
+    od_sales->clear();
+
+    char* c;
+    string s;
+    ostringstream os;
+
+    for (Sales_associate sa: shop.sales_associates())
+    {
+        cout << sa << endl;
+        os << sa;
+        s = os.str();
+        c = controller.get_charstar(s);
+        od_sales->add(c);
+        os.str("");
+    }
+
+    for (Customer cu: shop.customers())
+    {
+        cout << cu << endl;
+        os << cu;
+        s = os.str();
+        c = controller.get_charstar(s);
+        od_customers->add(c);
+        os.str("");
+    }
+
+    for (Robot_model r: shop.models())
+    {
+        cout << r << endl;
+        os << r ;
+        s=os.str();
+        c = controller.get_charstar(s);
+        od_models->add(c);
+        os.str("");
+    }
+
+    orders_dlg->show();
+
+
+};
+
+
+void refresh_report_ordersCB(Fl_Widget* w, void* p) {
+    report_all_orders_dlg->hide();
+    orders_broswer->clear();
+
+    char* c;
+    string s;
+    ostringstream os;
+    for (Order r: shop.orders())
+    {
+        cout << r << endl;
+        //s = r.to_string();
+
+        //cout << r << endl;
+        os << r << "Model: " << (shop.models()[r.model()]).name() << " | "
+           << "Customer: " << (shop.customers()[r.customer()].name()) << " | "
+           << "Sales Associate: " << (shop.sales_associates()[r.sales_associate()].name());
+
+        s=os.str();
+        c = controller.get_charstar(s);
+        orders_broswer->add(c);
+        os.str("");
+    }
+
+    report_all_orders_dlg->show();
 
 }
 
 
-//
 //
 // Menu
 //
@@ -679,19 +1076,19 @@ Fl_Menu_Item menuitems[] = {
         { "&Paste", 0, (Fl_Callback *)CB },
         { 0 },
         { "&Create", 0, 0, 0, FL_SUBMENU },
-        { "Order", 0, (Fl_Callback *)CB, 0, FL_MENU_DIVIDER  },
-        { "Customer", 0, (Fl_Callback *)CB },
-        { "Sales Associate", 0, (Fl_Callback *)CB, 0, FL_MENU_DIVIDER  },
+        { "Order", 0, (Fl_Callback *)menu_create_orderCB, 0, FL_MENU_DIVIDER  },
+        { "Customer", 0, (Fl_Callback *)menu_create_customerCB },
+        { "Sales Associate", 0, (Fl_Callback *)menu_create_salesCB, 0, FL_MENU_DIVIDER  },
         { "Robot Part", 0, (Fl_Callback *)menu_create_robot_partCB },
         { "Robot Model", 0, (Fl_Callback *)menu_create_robot_modelCB },
         { 0 },
         { "&Report", 0, 0, 0, FL_SUBMENU },
         { "Invoice", 0, (Fl_Callback *)CB, 0, FL_MENU_DIVIDER  },
-        { "All Orders", 0, (Fl_Callback *)CB },
+        { "All Orders", 0, (Fl_Callback *)menu_report_ordersCB },
         { "Orders by Customer", 0, (Fl_Callback *)CB },
         { "Orders by Sales Associate", 0, (Fl_Callback *)CB, 0, FL_MENU_DIVIDER },
-        { "All Customers", 0, (Fl_Callback *)CB },
-        { "All Sales Associates", 0, (Fl_Callback *)CB, 0, FL_MENU_DIVIDER  },
+        { "All Customers", 0, (Fl_Callback *)menu_report_customersCB },
+        { "All Sales Associates", 0, (Fl_Callback *)menu_report_salesCB, 0, FL_MENU_DIVIDER  },
         { "All Robot Models", 0, (Fl_Callback *)menu_report_robot_modelsCB },
         { "All Robot Parts", 0, (Fl_Callback *)menu_report_robot_partsCB },
         { 0 },
@@ -704,13 +1101,7 @@ Fl_Menu_Item menuitems[] = {
 
 
 
-
-
 int main() {
-  //Shop shop{"Robbie Robot Shop"};
-  //Controller controller(shop);
-  //controller.cli();
-
 
     const int X = 660;
     const int Y = 320;
@@ -718,20 +1109,23 @@ int main() {
     // Create dialogs
     robot_part_dlg = new Robot_Part_Dialog{};
     robot_model_dlg = new Robot_Model_Dialog {};
-
+    customer_dlg =  new Customer_Dialog {};
+    sales_dlg = new Sales_Dialog{};
+    orders_dlg = new Orders_Dialog{};
     report_all_models_dlg = new Report_All_Models_Dialog{};
     report_all_parts_dlg = new Report_All_Parts_Dialog {};
+    report_all_customers_dlg = new Report_All_Customers_Dialog {};
+    report_all_sales_dlg = new Report_All_Sales_Dialog {};
+    report_all_orders_dlg = new Report_All_Orders_Dialog{};
 
     // Create a window
+    //fl_register_images();
     win = new Fl_Window{X, Y, "Robbie Robot Shop Manager"};
     win->color(FL_WHITE);
 
     // Install menu bar
     menubar = new Fl_Menu_Bar(0, 0, X, 30);
     menubar->menu(menuitems);
-
-
-
 
     // Wrap it up and let FLTK do its thing
     win->end();

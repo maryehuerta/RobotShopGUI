@@ -36,39 +36,22 @@
 string Robot_model::name() const {return _name;}
 string Robot_model::part_number() const {return _part_number;}
 double Robot_model::price() const {return _price;}
-Torso& Robot_model::torso() const {return _torso;}
-Head& Robot_model::head() const {return _head;}
-Arm& Robot_model::arm1() const {return _arm1;}
-Arm& Robot_model::arm2() const {return _arm2;}
-Locomotor& Robot_model::locomotor() const {return _locomotor;}
-Battery& Robot_model::battery1() const {return _battery1;}
-Battery& Robot_model::battery2() const {return _battery2;}
-Battery& Robot_model::battery3() const {return _battery3;}
+int Robot_model::torso() const {return _torso;}
+int Robot_model::head() const {return _head;}
+int Robot_model::arm1() const {return _arm1;}
+int Robot_model::arm2() const {return _arm2;}
+int Robot_model::locomotor() const {return _locomotor;}
+int Robot_model::battery1() const {return _battery1;}
+int Robot_model::battery2() const {return _battery2;}
+int Robot_model::battery3() const {return _battery3;}
 
-double Robot_model::parts_cost() const {
-  return _torso.cost()
-       + _head.cost()
-       + _arm1.cost()
-       + _arm2.cost()
-       + _locomotor.cost()
-       + _battery1.cost()
-       + _battery2.cost()
-       + _battery3.cost();
-} 
+
 
 string Robot_model::to_string() const {return _name + " (PN " + _part_number + ")";}
 
 ostream& operator<<(ostream& os, const Robot_model& model) {
   return os << fixed << setprecision(2)
             << model.name() << " (" << " PN " << model.part_number() 
-            << " parts cost $" << model.parts_cost() << " price $" << model.price() << ")"
-            /*<< "   " << model.torso();
-            << "   " << model.head() << endl
-            << "   " << model.arm1() << endl
-            << "   " << model.arm2() << endl
-            << "   " << model.locomotor() << endl
-            << "   " << model.battery1() << endl
-            << "   " << model.battery2() << endl
-            << "   " << model.battery3()*/;
+             << " price $" << model.price() << ")" ;
 }
 

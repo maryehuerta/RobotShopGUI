@@ -35,23 +35,22 @@
  
 string Order::order_number() const {return _order_number;}
 string Order::date_of_sale() const {return _date_of_sale;}
-Robot_model& Order::model() const {return _model;}
-Customer& Order::customer() const {return _customer;}
-Sales_associate& Order::sales_associate() const {return _sales_associate;}
-double Order::subtotal() const {return _model.price();}
-double Order::sales_tax() const {return _model.price()*sales_tax_rate;}
-double Order::total_price() const {return _model.price()*(1+sales_tax_rate) + shipping;}
+int Order::model() const {return _model;}
+int Order::customer() const {return _customer;}
+int  Order::sales_associate() const {return _sales_associate;}
+//double Order::subtotal() const {return _model.price();}
+//double Order::sales_tax() const {return _model.price()*sales_tax_rate;}
+//double Order::total_price() const {return _model.price()*(1+sales_tax_rate) + shipping;}
 
-string Order::to_string() const {return _order_number+ " (" + _model.name() + " for "
-                                      + _customer.name() + " by " + _sales_associate.name() + ")";}
+
+//string Order::to_string() const {return _order_number+ " (" + _model.name() + " for "
+//                                      + _customer.name() + " by " + _sales_associate.name() + ")";}
 
 ostream& operator<<(ostream& os, const Order& order) {
   return os << fixed << setprecision(2)
-            << order.order_number() << " Price: $" << order.total_price() 
-            << " (subtotal $" << order.subtotal() << " + sales tax $" << order.sales_tax()
-            << " + shipping $" << 100.0 << ")" << endl
-            << "   Customer: " << order.customer() << endl
-            << "   Sales Associate: " << order.sales_associate() << endl
-            << "   Robot Model: " << order.model();
+            << order.order_number() << " placed on date " << order.date_of_sale() /*<< " Price: $" << order.total_price()
+            << " (subtotal $" << order.subtotal() << " +  sales tax $" << order.sales_tax()*/
+            ;
+
 }
 
