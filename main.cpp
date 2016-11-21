@@ -44,6 +44,7 @@
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Check_Browser.H>
 #include <FL/Fl_Browser.H>
+#include <FL/Fl_Radio_Button.H>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -101,6 +102,7 @@ class Orders_Dialog;
 
 Fl_Window *win;
 Fl_Menu_Bar *menubar;
+Fl_Box *box;
 Robot_Part_Dialog *robot_part_dlg;
 Robot_Model_Dialog *robot_model_dlg;
 Report_All_Parts_Dialog *report_all_parts_dlg;
@@ -143,51 +145,60 @@ Fl_Check_Browser* od_sales;
 
 class Robot_Part_Dialog {
 public:
-    Robot_Part_Dialog() {
+        Robot_Part_Dialog() {
 
 
-        shop.create_battery("B1", "3", 5.3, 10.99, 2, "The battery like no other" );
-        shop.create_battery("Blue8000", "3", 5.3, 10.99, 80, "This battery has tons of power" );
-        shop.create_head("TheHead", "51", 12.1, 10.99, "Robot head with lights");
-        shop.create_head("V2", "11", 11.1, 15.99, "Robot head that is sturdy");
-        shop.create_arm("Army", "4", 1.1, 2.99, 1, "It's an arm with flare");
-        shop.create_arm("Lefty", "2", 2.1, 3.99, 2, "A left arm that can rotate");
-        shop.create_arm("Righty", "1", 2.1, 2.99, 1, "A right arm that can't rotate");
-        shop.create_locomotor("Loco's Motors", "22", 8.4, 11.95, 5, 2, "This will get your robot far");
-        shop.create_locomotor("Motor541", "22", 1.1, 10.00, 2, 1, "caution prone to fires");
-        shop.create_torso("Timmy's Torso", "1", 3.1, 3.99, 3, "This is a hard out shell of a torso");
-        shop.create_torso("BaseCamp", "300", 30.1, 30.39, 1, "Toughest most reliable torso on the robot black market");
+            shop.create_battery("B1", "3", 5.3, 10.99, 2, "The battery like no other" );
+            shop.create_battery("Blue8000", "3", 5.3, 10.99, 80, "This battery has tons of power" );
+            shop.create_head("TheHead", "51", 12.1, 10.99, "Robot head with lights");
+            shop.create_head("V2", "11", 11.1, 15.99, "Robot head that is sturdy");
+            shop.create_arm("Army", "4", 1.1, 2.99, 1, "It's an arm with flare");
+            shop.create_arm("Lefty", "2", 2.1, 3.99, 2, "A left arm that can rotate");
+            shop.create_arm("Righty", "1", 2.1, 2.99, 1, "A right arm that can't rotate");
+            shop.create_locomotor("Loco's Motors", "22", 8.4, 11.95, 5, 2, "This will get your robot far");
+            shop.create_locomotor("Motor541", "22", 1.1, 10.00, 2, 1, "caution prone to fires");
+            shop.create_torso("Timmy's Torso", "1", 3.1, 3.99, 3, "This is a hard out shell of a torso");
+            shop.create_torso("BaseCamp", "300", 30.1, 30.39, 1, "Toughest most reliable torso on the robot black market");
 
-        dialog = new Fl_Window(340, 270, "Robot Part");
+            dialog = new Fl_Window(640, 270, "Robot Part");
+            dialog->color(0x00CCFFFF);
+            rp_name = new Fl_Input(120, 10, 210, 25, "Name:");
+            rp_name->align(FL_ALIGN_LEFT);
 
-        rp_name = new Fl_Input(120, 10, 210, 25, "Name:");
-        rp_name->align(FL_ALIGN_LEFT);
+            rp_part_number = new Fl_Input(120, 40, 210, 25, "Part Number:");
+            rp_part_number->align(FL_ALIGN_LEFT);
 
-        rp_part_number = new Fl_Input(120, 40, 210, 25, "Part Number:");
-        rp_part_number->align(FL_ALIGN_LEFT);
+            rp_type = new Fl_Input(120, 70, 210, 25, "Type:");
+            rp_type->align(FL_ALIGN_LEFT);
 
-        rp_type = new Fl_Input(120, 70, 210, 25, "Type:");
-        rp_type->align(FL_ALIGN_LEFT);
+            rp_weight = new Fl_Input(120, 100, 210, 25, "Weight:");
+            rp_weight->align(FL_ALIGN_LEFT);
 
-        rp_weight = new Fl_Input(120, 100, 210, 25, "Weight:");
-        rp_weight->align(FL_ALIGN_LEFT);
+            rp_cost = new Fl_Input(120, 130, 210, 25, "Cost:");
+            rp_cost->align(FL_ALIGN_LEFT);
 
-        rp_cost = new Fl_Input(120, 130, 210, 25, "Cost:");
-        rp_cost->align(FL_ALIGN_LEFT);
+            rp_description = new Fl_Multiline_Input(120, 160, 210, 75, "Description:");
+            rp_description->align(FL_ALIGN_LEFT);
 
-        rp_description = new Fl_Multiline_Input(120, 160, 210, 75, "Description:");
-        rp_description->align(FL_ALIGN_LEFT);
+            rp_max_battery_slots1 = new Fl_Radio_Button(420, 200, 10, 10, "1");
+            rp_max_battery_slots1->align(FL_ALIGN_LEFT);
+            rp_max_battery_slots2 = new Fl_Radio_Button(450, 200, 10, 10, "2");
+            rp_max_battery_slots2->align(FL_ALIGN_LEFT);
+            rp_max_battery_slots3 = new Fl_Radio_Button(480, 200, 10, 10, "3");
+            rp_max_battery_slots3->align(FL_ALIGN_LEFT);
 
-        rp_create = new Fl_Return_Button(145, 240, 120, 25, "Create");
 
-        rp_create->callback((Fl_Callback *)create_robot_partCB, 0);
-
-        rp_cancel = new Fl_Button(270, 240, 60, 25, "Cancel");
-        rp_cancel->callback((Fl_Callback *)cancel_robot_partCB, 0);
-
-        dialog->end();
-        dialog->set_non_modal();
-    }
+            rp_create = new Fl_Return_Button(445, 240, 120, 25, "Create");
+            rp_create->callback((Fl_Callback *)create_robot_partCB, 0);
+            rp_create->color(FL_WHITE);
+            rp_create->labelcolor(0x00CCFFFF);
+            rp_cancel = new Fl_Button(570, 240, 60, 25, "Cancel");
+            rp_cancel->callback((Fl_Callback *)cancel_robot_partCB, 0);
+            rp_cancel->color(FL_WHITE);
+            rp_cancel->labelcolor(0x00CCFFFF);
+            dialog->end();
+            dialog->set_non_modal();
+        }
 
     void show() {dialog->show();}
     void hide() {dialog->hide();}
@@ -208,8 +219,15 @@ private:
     Fl_Input *rp_weight;
     Fl_Input *rp_cost;
     Fl_Input *rp_description;
+    Fl_Input *rp_maxpower; //locomotor
+    Fl_Input *rp_maxpower_consumed; //arm
+    Fl_Input *rp_max_energy_stored; //battery
+    Fl_Radio_Button *rp_max_battery_slots1;
+    Fl_Radio_Button *rp_max_battery_slots2;
+    Fl_Radio_Button *rp_max_battery_slots3;
     Fl_Return_Button *rp_create;
     Fl_Button *rp_cancel;
+
 };
 void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
     cout << "### Creating robot part" << endl;
@@ -266,7 +284,7 @@ public:
 
         //Created for testing
         dialog = new Fl_Window(610, 600, "Create a Robot Model");
-
+        dialog->color(0x00CCFFFF);
 
         md_torso_broswer = new Fl_Check_Browser(400, 10, 200, 50, "Torso");
         md_torso_broswer->align(FL_ALIGN_LEFT);
@@ -309,14 +327,17 @@ public:
 
         md_create = new Fl_Return_Button(340, 570, 120, 25, "Create");
         md_create->callback((Fl_Callback *) create_robot_modelCB, 0);
-
+        md_create->color(FL_WHITE);
+        md_create->labelcolor(0x00CCFFFF);
         md_cancel = new Fl_Button(530, 570, 60, 25, "Cancel");
         md_cancel->callback((Fl_Callback *) cancel_robot_modelCB, 0);
-
+        md_cancel->color(FL_WHITE);
+        md_cancel->labelcolor(0x00CCFFFF);
 
         md_refresh = new Fl_Button(465, 570, 60, 25, "Refresh");
         md_refresh->callback((Fl_Callback *) refresh_robot_modelCB , 0);
-
+        md_refresh->color(FL_WHITE);
+        md_refresh->labelcolor(0x00CCFFFF);
 
         dialog->end();
         dialog->set_non_modal();
@@ -374,7 +395,7 @@ public:
 
 
         dialog = new Fl_Window(700, 700, "Report All Parts");
-
+        dialog->color(0x00CCFFFF);
         rt_torso_broswer = new Fl_Check_Browser(80, 30, 600, 100, "Torsos");
         rt_torso_broswer->align(FL_ALIGN_LEFT);
 
@@ -395,10 +416,12 @@ public:
 
         md_create = new Fl_Return_Button(370, 670, 120, 25, "Okay");
         md_create->callback((Fl_Callback *) okay_report_partsCB, 0);
-
+        md_create->color(FL_WHITE);
+        md_create->labelcolor(0x00CCFFFF);
         md_refresh = new Fl_Button(495, 670, 60, 25, "Refresh");
         md_refresh->callback((Fl_Callback *) refresh_report_partsCB , 0);
-
+        md_refresh->color(FL_WHITE);
+        md_refresh->labelcolor(0x00CCFFFF);
 
         dialog->end();
         dialog->set_non_modal();
@@ -428,16 +451,18 @@ public:
     Report_All_Models_Dialog() {
         Fl::check();
         dialog = new Fl_Window(700, 200, "Report All Models");
-
+        dialog->color(0x00CCFFFF);
         rt_models = new Fl_Browser(80, 30, 600, 100, "Models");
         rt_models->align(FL_ALIGN_LEFT);
 
         md_create = new Fl_Return_Button(450, 150, 120, 25, "Okay");
         md_create->callback((Fl_Callback *) okay_report_modelsCB, 0);
-
+        md_create->color(FL_WHITE);
+        md_create->labelcolor(0x00CCFFFF);
         md_refresh = new Fl_Button(575, 150, 60, 25, "Refresh");
         md_refresh->callback((Fl_Callback *) refresh_report_modelsCB , 0);
-
+        md_refresh->color(FL_WHITE);
+        md_refresh->labelcolor(0x00CCFFFF);
         dialog->end();
         dialog->set_non_modal();
     }
@@ -456,8 +481,8 @@ class Customer_Dialog { //Name address phone number email address
 public:
     Customer_Dialog() {
 
-        dialog = new Fl_Window(340, 270, "Customer");
-
+        dialog = new Fl_Window(340, 240, "Customer");
+        dialog->color(0x00CCFFFF);
         bc_name = new Fl_Input(120, 10, 210, 25, "Name:");
         bc_name->align(FL_ALIGN_LEFT);
 
@@ -470,12 +495,14 @@ public:
         bc_emailaddress = new Fl_Input(120, 100, 210, 25, "Email:");
         bc_emailaddress->align(FL_ALIGN_LEFT);
 
-        rp_create = new Fl_Return_Button(145, 240, 120, 25, "Create");
+        rp_create = new Fl_Return_Button(145, 200, 120, 25, "Create");
         rp_create->callback((Fl_Callback *)create_customerCB, 0);
-
-        rp_cancel = new Fl_Button(270, 240, 60, 25, "Cancel");
+        rp_create->color(FL_WHITE);
+        rp_create->labelcolor(0x00CCFFFF);
+        rp_cancel = new Fl_Button(270, 200, 60, 25, "Cancel");
         rp_cancel->callback((Fl_Callback *)cancel_customerCB, 0);
-
+        rp_cancel->color(FL_WHITE);
+        rp_cancel->labelcolor(0x00CCFFFF);
         dialog->end();
         dialog->set_non_modal();
     }
@@ -504,16 +531,18 @@ public:
     Report_All_Customers_Dialog() {
         Fl::check();
         dialog = new Fl_Window(700, 200, "Report All Customers");
-
+        dialog->color(0x00CCFFFF);
         customers_broswer = new Fl_Browser(80, 30, 600, 100, "Customers");
         customers_broswer->align(FL_ALIGN_LEFT);
 
         md_create = new Fl_Return_Button(450, 150, 120, 25, "Okay");
         md_create->callback((Fl_Callback *) okay_report_customersCB, 0);
-
+        md_create->color(FL_WHITE);
+        md_create->labelcolor(0x00CCFFFF);
         md_refresh = new Fl_Button(575, 150, 60, 25, "Refresh");
         md_refresh->callback((Fl_Callback *) refresh_report_customersCB , 0);
-
+        md_refresh->color(FL_WHITE);
+        md_refresh->labelcolor(0x00CCFFFF);
         dialog->end();
         dialog->set_non_modal();
     }
@@ -532,20 +561,22 @@ class Sales_Dialog { //Name address phone number email address
 public:
     Sales_Dialog() {
 
-        dialog = new Fl_Window(340, 270, "Sales Associate");
-
-        sa_name = new Fl_Input(120, 10, 210, 25, "Name:");
+        dialog = new Fl_Window(340, 150, "Sales Associate");
+        dialog->color(0x00CCFFFF);
+        sa_name = new Fl_Input(100, 10, 210, 25, "Name:");
         sa_name->align(FL_ALIGN_LEFT);
 
-        sa_number = new Fl_Input(120, 40, 210, 25, "Number:");
+        sa_number = new Fl_Input(100, 40, 210, 25, "Number:");
         sa_number->align(FL_ALIGN_LEFT);
 
-        rp_create = new Fl_Return_Button(145, 240, 120, 25, "Create");
+        rp_create = new Fl_Return_Button(145, 120, 120, 25, "Create");
         rp_create->callback((Fl_Callback *)create_salesCB, 0);
-
-        rp_cancel = new Fl_Button(270, 240, 60, 25, "Cancel");
+        rp_create->color(FL_WHITE);
+        rp_create->labelcolor(0x00CCFFFF);
+        rp_cancel = new Fl_Button(270, 120, 60, 25, "Cancel");
         rp_cancel->callback((Fl_Callback *)cancel_salesCB, 0);
-
+        rp_cancel->color(FL_WHITE);
+        rp_cancel->labelcolor(0x00CCFFFF);
         dialog->end();
         dialog->set_non_modal();
     }
@@ -571,16 +602,18 @@ public:
     Report_All_Sales_Dialog() {
         Fl::check();
         dialog = new Fl_Window(700, 200, "Report All Sales Associates");
-
+        dialog->color(0x00CCFFFF);
         sales_broswer = new Fl_Browser(80, 30, 600, 100, "Sales\nAssociates");
         sales_broswer->align(FL_ALIGN_LEFT);
 
         md_create = new Fl_Return_Button(450, 150, 120, 25, "Okay");
         md_create->callback((Fl_Callback *) okay_report_salesCB, 0);
-
+        md_create->color(FL_WHITE);
+        md_create->labelcolor(0x00CCFFFF);
         md_refresh = new Fl_Button(575, 150, 60, 25, "Refresh");
         md_refresh->callback((Fl_Callback *) refresh_report_salesCB , 0);
-
+        md_refresh->color(FL_WHITE);
+        md_refresh->labelcolor(0x00CCFFFF);
         dialog->end();
         dialog->set_non_modal();
     }
@@ -600,16 +633,18 @@ public:
     Report_All_Orders_Dialog() {
         Fl::check();
         dialog = new Fl_Window(700, 200, "Report All Orders");
-
+        dialog->color(0x00CCFFFF);
         orders_broswer = new Fl_Browser(80, 30, 600, 100, "Orders");
         orders_broswer->align(FL_ALIGN_LEFT);
 
         md_create = new Fl_Return_Button(450, 150, 120, 25, "Okay");
         md_create->callback((Fl_Callback *) okay_report_ordersCB, 0);
-
+        md_create->color(FL_WHITE);
+        md_create->labelcolor(0x00CCFFFF);
         md_refresh = new Fl_Button(575, 150, 60, 25, "Refresh");
         md_refresh->callback((Fl_Callback *) refresh_report_ordersCB , 0);
-
+        md_refresh->color(FL_WHITE);
+        md_refresh->labelcolor(0x00CCFFFF);
         dialog->end();
         dialog->set_non_modal();
     }
@@ -632,9 +667,8 @@ public:
 
         Fl::check();
 
-        //Created for testing
-        dialog = new Fl_Window(610, 600, "Create an Order");
-
+        dialog = new Fl_Window(610, 300, "Create an Order");
+        dialog->color(0x00CCFFFF);
         od_customers = new Fl_Check_Browser(400, 10, 200, 50, "Customers");
         od_customers->align(FL_ALIGN_LEFT);
 
@@ -653,14 +687,17 @@ public:
 
         md_create = new Fl_Return_Button(340, 570, 120, 25, "Create");
         md_create->callback((Fl_Callback *) create_ordersCB, 0);
-
-        md_cancel = new Fl_Button(530, 570, 60, 25, "Cancel");
+        md_create->color(FL_WHITE);
+        md_create->labelcolor(0x00CCFFFF);
+        md_cancel = new Fl_Button(530, 270, 60, 25, "Cancel");
         md_cancel->callback((Fl_Callback *) cancel_ordersCB, 0);
+        md_cancel->color(FL_WHITE);
+        md_cancel->labelcolor(0x00CCFFFF);
 
-
-        md_refresh = new Fl_Button(465, 570, 60, 25, "Refresh");
+        md_refresh = new Fl_Button(465, 270, 60, 25, "Refresh");
         md_refresh->callback((Fl_Callback *) refresh_ordersCB , 0);
-
+        md_refresh->color(FL_WHITE);
+        md_refresh->labelcolor(0x00CCFFFF);
 
         dialog->end();
         dialog->set_non_modal();
@@ -781,10 +818,9 @@ void refresh_robot_modelCB(Fl_Widget* w, void* p) {
         bnum++;
 
     }
-    //robot_model_dlg->hide();
-    //report_all_parts_dlg->hide();
+
     robot_model_dlg->show();
-    //report_all_parts_dlg->show();
+
 
 };
 
@@ -1042,7 +1078,7 @@ void refresh_report_ordersCB(Fl_Widget* w, void* p) {
         //s = r.to_string();
 
         //cout << r << endl;
-        os << r << "Model: " << (shop.models()[r.model()]).name() << " | "
+        os << r << " Shipping: $100.00 | Sales Tax: $9.98 |"<< " Model: " << (shop.models()[r.model()]).name() << " | "
            << "Customer: " << (shop.customers()[r.customer()].name()) << " | "
            << "Sales Associate: " << (shop.sales_associates()[r.sales_associate()].name());
 
@@ -1103,7 +1139,7 @@ Fl_Menu_Item menuitems[] = {
 
 int main() {
 
-    const int X = 660;
+    const int X = 700;
     const int Y = 320;
 
     // Create dialogs
@@ -1120,13 +1156,19 @@ int main() {
 
     // Create a window
     //fl_register_images();
-    win = new Fl_Window{X, Y, "Robbie Robot Shop Manager"};
-    win->color(FL_WHITE);
+    win = new Fl_Window{X, Y, "Mr.Robot's Robot"};
+    win->color(0x00CCFFFF);
 
+    box = new Fl_Box(20,100,640,160, "Mr.Robot's Shop \n est. 1996");
+    box->box(FL_EMBOSSED_BOX);
+    box->labelsize(60);
+    box->color(FL_BLACK);
+    box->labelcolor(0x00CCFFFF);
+    box->labelfont(FL_ZAPF_DINGBATS);
     // Install menu bar
     menubar = new Fl_Menu_Bar(0, 0, X, 30);
     menubar->menu(menuitems);
-
+    menubar->color(FL_WHITE);
     // Wrap it up and let FLTK do its thing
     win->end();
     win->show();
