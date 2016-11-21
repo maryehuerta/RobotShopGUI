@@ -45,6 +45,7 @@
 #include <FL/Fl_Check_Browser.H>
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Radio_Button.H>
+#include <FL/Fl_Choice.H>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -180,13 +181,11 @@ public:
             rp_description = new Fl_Multiline_Input(120, 160, 210, 75, "Description:");
             rp_description->align(FL_ALIGN_LEFT);
 
-            rp_max_battery_slots1 = new Fl_Radio_Button(420, 200, 10, 10, "1");
-            rp_max_battery_slots1->align(FL_ALIGN_LEFT);
-            rp_max_battery_slots2 = new Fl_Radio_Button(450, 200, 10, 10, "2");
-            rp_max_battery_slots2->align(FL_ALIGN_LEFT);
-            rp_max_battery_slots3 = new Fl_Radio_Button(480, 200, 10, 10, "3");
-            rp_max_battery_slots3->align(FL_ALIGN_LEFT);
 
+            rp_max_battery_slots = new Fl_Choice ( 450, 10, 30, 30, "Max Batteries (torso)");
+            rp_max_battery_slots->add("1");
+            rp_max_battery_slots->add("2");
+            rp_max_battery_slots->add("3");
 
             rp_create = new Fl_Return_Button(445, 240, 120, 25, "Create");
             rp_create->callback((Fl_Callback *)create_robot_partCB, 0);
@@ -222,9 +221,9 @@ private:
     Fl_Input *rp_maxpower; //locomotor
     Fl_Input *rp_maxpower_consumed; //arm
     Fl_Input *rp_max_energy_stored; //battery
-    Fl_Radio_Button *rp_max_battery_slots1;
-    Fl_Radio_Button *rp_max_battery_slots2;
-    Fl_Radio_Button *rp_max_battery_slots3;
+    Fl_Label *rp_torsolabel;
+
+    Fl_Choice *rp_max_battery_slots;
     Fl_Return_Button *rp_create;
     Fl_Button *rp_cancel;
 
