@@ -161,7 +161,7 @@ public:
             shop.create_torso("Timmy's Torso", "1", 3.1, 3.99, 3, "This is a hard out shell of a torso");
             shop.create_torso("BaseCamp", "300", 30.1, 30.39, 1, "Toughest most reliable torso on the robot black market");
 
-            dialog = new Fl_Window(640, 270, "Robot Part");
+            dialog = new Fl_Window(740, 270, "Robot Part");
             dialog->color(0x00CCFFFF);
             rp_name = new Fl_Input(120, 10, 210, 25, "Name:");
             rp_name->align(FL_ALIGN_LEFT);
@@ -182,10 +182,19 @@ public:
             rp_description->align(FL_ALIGN_LEFT);
 
 
-            rp_max_battery_slots = new Fl_Choice ( 450, 10, 30, 30, "Max Batteries (torso)");
+            rp_max_battery_slots = new Fl_Choice ( 490, 30, 50, 25, "Max Batteries\n(torso)");
             rp_max_battery_slots->add("1");
             rp_max_battery_slots->add("2");
             rp_max_battery_slots->add("3");
+
+            rp_maxpower_consumed = new Fl_Input( 490, 70, 210, 25, "Max Power Consumed\n(arm)");
+
+            rp_maxpower = new Fl_Input( 490, 110, 210, 25, "Max Power\n(locomotor)");
+
+            rp_max_energy_stored =  new Fl_Input( 490, 150, 210, 25, "Max Energy Stored\n(battery)");
+
+            rp_max_speed =  new Fl_Input( 490, 190, 210, 25, "Max Speed\n(locomotor)");
+
 
             rp_create = new Fl_Return_Button(445, 240, 120, 25, "Create");
             rp_create->callback((Fl_Callback *)create_robot_partCB, 0);
@@ -209,6 +218,13 @@ public:
 
     double cost() {return atof(rp_cost->value());}
     string description() {return rp_description->value();}
+    int maxpower () {return atoi(rp_maxpower->value());} //locomotor
+    int max_speed () {return atoi(rp_max_speed->value());} //locomotor
+
+    int maxpower_consumed () {return atoi(rp_maxpower_consumed->value());} //arm
+    int max_energy_stored () {return atoi(rp_max_energy_stored->value());}
+    int max_battery_slots () { return rp_max_battery_slots->value();}
+
 
 private:
     Fl_Window *dialog;
@@ -221,9 +237,9 @@ private:
     Fl_Input *rp_maxpower; //locomotor
     Fl_Input *rp_maxpower_consumed; //arm
     Fl_Input *rp_max_energy_stored; //battery
-    Fl_Label *rp_torsolabel;
-
+    Fl_Input *rp_max_speed;
     Fl_Choice *rp_max_battery_slots;
+
     Fl_Return_Button *rp_create;
     Fl_Button *rp_cancel;
 
@@ -240,7 +256,7 @@ void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
     if ( robot_part_dlg->type().compare("arm") == 0)
     {
         shop.create_arm(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                        robot_part_dlg->cost(), 100,  robot_part_dlg->description()) ;
+                        robot_part_dlg->cost(), robot_part_dlg->maxpower(),  robot_part_dlg->description()) ;
     }
     if ( robot_part_dlg->type().compare("head") == 0)
     {
@@ -250,18 +266,18 @@ void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
     if ( robot_part_dlg->type().compare("torso") == 0)
     {
         shop.create_torso(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                          robot_part_dlg->cost(), 2,  robot_part_dlg->description());
+                          robot_part_dlg->cost(), robot_part_dlg->max_battery_slots(),  robot_part_dlg->description());
 
     }
     if ( robot_part_dlg->type().compare("battery") == 0)
     {
         shop.create_battery(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                            robot_part_dlg->cost(), 100,  robot_part_dlg->description());
+                            robot_part_dlg->cost(), robot_part_dlg->max_energy_stored(),  robot_part_dlg->description());
     }
     if ( robot_part_dlg->type().compare("locomotor") == 0)
     {
         shop.create_locomotor(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                              robot_part_dlg->cost(), 100, 100,  robot_part_dlg->description());
+                              robot_part_dlg->cost(), robot_part_dlg->maxpower_consumed(), robot_part_dlg->max_speed(),  robot_part_dlg->description());
     }
 
 
