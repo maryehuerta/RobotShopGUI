@@ -169,8 +169,13 @@ public:
             rp_part_number = new Fl_Input(120, 40, 210, 25, "Part Number:");
             rp_part_number->align(FL_ALIGN_LEFT);
 
-            rp_type = new Fl_Input(120, 70, 210, 25, "Type:");
+            rp_type = new Fl_Choice(120, 70, 210, 25, "Type:");
             rp_type->align(FL_ALIGN_LEFT);
+            rp_type->add("arm");
+            rp_type->add("head");
+            rp_type->add("torso");
+            rp_type->add("battery");
+            rp_type->add("locomotor");
 
             rp_weight = new Fl_Input(120, 100, 210, 25, "Weight:");
             rp_weight->align(FL_ALIGN_LEFT);
@@ -212,7 +217,7 @@ public:
     void hide() {dialog->hide();}
     string name() {return rp_name->value();}
     string part_number() {return rp_part_number->value();}
-    string type() {return rp_type->value();}
+    int type() {return rp_type->value();}
 
     double weight() {return atof(rp_weight->value());}
 
@@ -230,7 +235,7 @@ private:
     Fl_Window *dialog;
     Fl_Input *rp_name;
     Fl_Input *rp_part_number;
-    Fl_Input *rp_type;
+    Fl_Choice *rp_type;
     Fl_Input *rp_weight;
     Fl_Input *rp_cost;
     Fl_Input *rp_description;
@@ -253,31 +258,31 @@ void create_robot_partCB(Fl_Widget* w, void* p) { // Replace with call to model!
     cout << "Cost    : " << robot_part_dlg->cost() << endl;
     cout << "Descript: " << robot_part_dlg->description() << endl;
 
-    if ( robot_part_dlg->type().compare("arm") == 0)
+    if ( robot_part_dlg->type() == 0)
     {
         shop.create_arm(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                        robot_part_dlg->cost(), robot_part_dlg->maxpower(),  robot_part_dlg->description()) ;
+                        robot_part_dlg->cost(), robot_part_dlg->maxpower_consumed(),  robot_part_dlg->description()) ;
     }
-    if ( robot_part_dlg->type().compare("head") == 0)
+    if ( robot_part_dlg->type() == 1)
     {
         shop.create_head(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
                          robot_part_dlg->cost(),   robot_part_dlg->description());
     }
-    if ( robot_part_dlg->type().compare("torso") == 0)
+    if ( robot_part_dlg->type() == 2)
     {
         shop.create_torso(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                          robot_part_dlg->cost(), robot_part_dlg->max_battery_slots(),  robot_part_dlg->description());
+                          robot_part_dlg->cost(), (robot_part_dlg->max_battery_slots())+1,  robot_part_dlg->description());
 
     }
-    if ( robot_part_dlg->type().compare("battery") == 0)
+    if ( robot_part_dlg->type() == 3)
     {
         shop.create_battery(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
                             robot_part_dlg->cost(), robot_part_dlg->max_energy_stored(),  robot_part_dlg->description());
     }
-    if ( robot_part_dlg->type().compare("locomotor") == 0)
+    if ( robot_part_dlg->type()== 4)
     {
         shop.create_locomotor(robot_part_dlg->name(), robot_part_dlg->part_number(), robot_part_dlg->weight(),
-                              robot_part_dlg->cost(), robot_part_dlg->maxpower_consumed(), robot_part_dlg->max_speed(),  robot_part_dlg->description());
+                              robot_part_dlg->cost(), robot_part_dlg->maxpower(), robot_part_dlg->max_speed(),  robot_part_dlg->description());
     }
 
 
