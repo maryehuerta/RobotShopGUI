@@ -85,6 +85,8 @@ void refresh_report_salesCB(Fl_Widget* w, void* p);
 void okay_report_salesCB(Fl_Widget* w, void* p);
 void refresh_report_ordersCB(Fl_Widget* w, void* p);
 void okay_report_ordersCB(Fl_Widget* w, void* p);
+void okay_helpCB(Fl_Widget* w, void* p);
+void okay_aboutCB(Fl_Widget* w, void* p);
 
 class Robot_Part_Dialog;
 class Robot_Model_Dialog;
@@ -96,6 +98,8 @@ class Report_All_Orders_Dialog;
 class Customer_Dialog;
 class Sales_Dialog;
 class Orders_Dialog;
+class Help_Dialog;
+class About_Dialog;
 //güd
 //
 // Widgets
@@ -104,6 +108,8 @@ class Orders_Dialog;
 Fl_Window *win;
 Fl_Menu_Bar *menubar;
 Fl_Box *box;
+Fl_Button *help_button;
+Fl_Button *about_button;
 Robot_Part_Dialog *robot_part_dlg;
 Robot_Model_Dialog *robot_model_dlg;
 Report_All_Parts_Dialog *report_all_parts_dlg;
@@ -114,6 +120,8 @@ Sales_Dialog *sales_dlg;
 Report_All_Sales_Dialog *report_all_sales_dlg;
 Orders_Dialog *orders_dlg;
 Report_All_Orders_Dialog *report_all_orders_dlg;
+Help_Dialog *help_dlg;
+About_Dialog *about_dlg;
 
 Shop shop{"Robbie Robot Shop"};
 Controller controller(shop);
@@ -147,20 +155,7 @@ Fl_Check_Browser* od_sales;
 class Robot_Part_Dialog {
 public:
         Robot_Part_Dialog() {
-
-
-            shop.create_battery("B1", "3", 5.3, 10.99, 2, "The battery like no other" );
-            shop.create_battery("Blue8000", "3", 5.3, 10.99, 80, "This battery has tons of power" );
-            shop.create_head("TheHead", "51", 12.1, 10.99, "Robot head with lights");
-            shop.create_head("V2", "11", 11.1, 15.99, "Robot head that is sturdy");
-            shop.create_arm("Army", "4", 1.1, 2.99, 1, "It's an arm with flare");
-            shop.create_arm("Lefty", "2", 2.1, 3.99, 2, "A left arm that can rotate");
-            shop.create_arm("Righty", "1", 2.1, 2.99, 1, "A right arm that can't rotate");
-            shop.create_locomotor("Loco's Motors", "22", 8.4, 11.95, 5, 2, "This will get your robot far");
-            shop.create_locomotor("Motor541", "22", 1.1, 10.00, 2, 1, "caution prone to fires");
-            shop.create_torso("Timmy's Torso", "1", 3.1, 3.99, 3, "This is a hard out shell of a torso");
-            shop.create_torso("BaseCamp", "300", 30.1, 30.39, 1, "Toughest most reliable torso on the robot black market");
-
+            
             dialog = new Fl_Window(740, 270, "Robot Part");
             dialog->color(0x00CCFFFF);
             rp_name = new Fl_Input(120, 10, 210, 25, "Name:");
@@ -503,16 +498,16 @@ public:
 
         dialog = new Fl_Window(340, 240, "Customer");
         dialog->color(0x00CCFFFF);
-        bc_name = new Fl_Input(120, 10, 210, 25, "Name:");
+        bc_name = new Fl_Input(110, 10, 210, 25, "Name:");
         bc_name->align(FL_ALIGN_LEFT);
 
-        bc_address = new Fl_Input(120, 40, 210, 25, "Address:");
+        bc_address = new Fl_Input(110, 40, 210, 25, "Address:");
         bc_address->align(FL_ALIGN_LEFT);
 
-        bc_phonenumber = new Fl_Input(120, 70, 210, 25, "Phone:");
+        bc_phonenumber = new Fl_Input(110, 70, 210, 25, "Phone:");
         bc_phonenumber->align(FL_ALIGN_LEFT);
 
-        bc_emailaddress = new Fl_Input(120, 100, 210, 25, "Email:");
+        bc_emailaddress = new Fl_Input(110, 100, 210, 25, "Email:");
         bc_emailaddress->align(FL_ALIGN_LEFT);
 
         rp_create = new Fl_Return_Button(145, 200, 120, 25, "Create");
@@ -749,6 +744,120 @@ private:
 
 };
 
+class Help_Dialog {
+public:
+    Help_Dialog() {
+        Fl::check();
+        dialog = new Fl_Window(700, 700, "Help");
+        dialog->color(0x00CCFFFF);
+
+        md_create = new Fl_Return_Button(550, 650, 120, 25, "Okay");
+        md_create->callback((Fl_Callback *) okay_helpCB , 0);
+        md_create->color(FL_WHITE);
+        md_create->labelcolor(0x00CCFFFF);
+
+
+        buff = new Fl_Text_Buffer();
+        about_box = new Fl_Text_Display(40, 20, 600, 600);
+        about_box->buffer(buff);
+        buff->text("\nFor the beginners:"
+                           "\n\t Start by creating sales associates (using your employee's number"
+                           "\n\t and name; Next create a customer and input their contact information."
+                           "\n\t Afterwords, Create Robot Parts then robot models. Finally create an "
+                           "\n\t order. You can view all of your creations hovering over the ''Report''"
+                           "\n\t menu."
+                           "\n\n Robot Parts:"
+                           "\n\t To create a robot part go to the create menu and click on ''Robot Part''"
+                           "\n\t Input all the information on the left side and don't forget to use the"
+                           "\n\t drop down menu to select what type of robot part you'd like to create"
+                           "\n\t using the right hand side of the dialog, input any extra data about "
+                           "\n\t the robot part, this will depend on the robot part type you selected"
+                           "\n\t Finally click create to create the robot part."
+                           "\n\n Robot Models:"
+                           "\n\t To create a robot model go to the create menu and click on ''Robot Model''"
+                           "\n\t in the submenu. Enter the name, part number, and cost for the robot."
+                           "\n\t In order to enter in any other information you must click the refresh"
+                           "\n\t button in the lower right hand corner of the screen. You will be able"
+                           "\n\t to see all the robot parts you created and select them with the check"
+                           "\n\t Box."
+                           "\n\t The Report Menu:"
+                           "\n\t To look at anything you've created go to the report menu and select the "
+                           "\n\t refresh button. After updating the screen you will see all your robot"
+                           "\n\t creations.");
+
+
+
+        md_create->color(FL_WHITE);
+
+
+        dialog->end();
+        dialog->set_non_modal();
+    }
+
+    void show() { dialog->show(); }
+    void hide() { dialog->hide(); }
+
+private:
+    Fl_Window *dialog;
+    Fl_Return_Button *md_create;
+    Fl_Text_Display *about_box;
+    Fl_Text_Buffer *buff;
+
+};
+
+class About_Dialog {
+public:
+    About_Dialog() {
+        Fl::check();
+        dialog = new Fl_Window(700, 700, "About");
+        dialog->color(0x00CCFFFF);
+
+        md_create = new Fl_Return_Button(550, 650, 120, 25, "Okay");
+        md_create->callback((Fl_Callback *) okay_aboutCB , 0);
+        md_create->color(FL_WHITE);
+        md_create->labelcolor(0x00CCFFFF);
+
+        buff = new Fl_Text_Buffer();
+        help_box = new Fl_Text_Display(40, 20, 600, 600);
+        help_box->buffer(buff);
+        buff->text(        "\n\n About Mr. Robot's Shop GUI v1.0.0"
+                           "\n\t Created with C++ and a little FLTK magic, Mr. Robot's Shop GUI v1.0.0 is for Sales"
+                                   "\n\t Associates, Bosses, and Customers. Each dialog is made so  that creating orders "
+
+                           "\n\t is a breeze. In this robot shop you can create:"
+                           "\n\n\t\t Robot Parts"
+                           "\n\t\t Robot Models (from Robot Parts you created)"
+                           "\n\t\t Customers"
+                           "\n\t\t Sales Assosiates"
+                           "\n\t\t And Orders"
+                           "\n\n\t You can even view what you've created by using the ''Report'' Submenu"
+                           "\n\t If you need help press the ''Help'' button on the main menu."
+                           "\n\n About Mr. Robot's Shop LLC"
+                           "\n\t Mr. Robot's Shop was made in 1996 after a big boom in the robot industry made way"
+                           "\n\t for robot's to be very customizable. We create all sorts of robots. Are you looking"
+                           "\n\t for that robot that cooks, builds houses, enforces the law, or helps wounded? Well"
+                           "\n\t we're just what you've been looking for! Our company is located on the West side of"
+                           "\n\t ''No Man's Land'' ignore the signs saying ''Danger'' and ''Keep Out'' that just means"
+                           "\n\t You're going in the right direction."
+                           );
+
+        md_create->color(FL_WHITE);
+
+
+        dialog->end();
+        dialog->set_non_modal();
+    }
+
+    void show() { dialog->show(); }
+    void hide() { dialog->hide(); }
+
+private:
+    Fl_Window *dialog;
+    Fl_Return_Button *md_create;
+    Fl_Text_Display *help_box;
+    Fl_Text_Buffer *buff;
+};
+
 //
 /// Callbacks
 //
@@ -767,11 +876,16 @@ void menu_report_customersCB(Fl_Widget* w, void *p) { report_all_customers_dlg->
 void menu_report_salesCB(Fl_Widget* w, void* p) { report_all_sales_dlg->show(); }
 void menu_report_ordersCB(Fl_Widget* w, void* p) { report_all_orders_dlg->show(); }
 
+void menu_aboutCB(Fl_Widget* w, void* p) { about_dlg->show(); }
+void menu_helpCB(Fl_Widget* w, void* p) { help_dlg->show(); }
+
 void okay_report_modelsCB(Fl_Widget* w, void* p) { report_all_models_dlg->hide(); }
 void okay_report_partsCB(Fl_Widget* w, void* p) { report_all_parts_dlg->hide(); }
 void okay_report_customersCB(Fl_Widget* w, void* p) { report_all_customers_dlg->hide(); }
 void okay_report_salesCB(Fl_Widget* w, void* p) { report_all_sales_dlg->hide(); }
 void okay_report_ordersCB(Fl_Widget* w, void* p) { report_all_orders_dlg->hide(); }
+void okay_helpCB(Fl_Widget* w, void* p) { help_dlg->hide(); }
+void okay_aboutCB(Fl_Widget* w, void* p) { about_dlg->hide(); }
 
 void cancel_robot_modelCB(Fl_Widget* w, void* p) { robot_model_dlg->hide(); }
 void cancel_robot_partCB(Fl_Widget* w, void* p){ robot_part_dlg->hide();  }
@@ -1148,10 +1262,6 @@ Fl_Menu_Item menuitems[] = {
         { "All Robot Models", 0, (Fl_Callback *)menu_report_robot_modelsCB },
         { "All Robot Parts", 0, (Fl_Callback *)menu_report_robot_partsCB },
         { 0 },
-        { "&Help", 0, 0, 0, FL_SUBMENU },
-        { "&Manual", 0, (Fl_Callback *)CB},
-        { "&About", 0, (Fl_Callback *)CB},
-        { 0 },
         { 0 }
 };
 
@@ -1160,7 +1270,7 @@ Fl_Menu_Item menuitems[] = {
 int main() {
 
     const int X = 700;
-    const int Y = 320;
+    const int Y = 700;
 
     // Create dialogs
     robot_part_dlg = new Robot_Part_Dialog{};
@@ -1173,18 +1283,34 @@ int main() {
     report_all_customers_dlg = new Report_All_Customers_Dialog {};
     report_all_sales_dlg = new Report_All_Sales_Dialog {};
     report_all_orders_dlg = new Report_All_Orders_Dialog{};
+    help_dlg = new Help_Dialog {};
+    about_dlg = new About_Dialog {};
 
     // Create a window
-    //fl_register_images();
+
     win = new Fl_Window{X, Y, "Mr.Robot's Robot"};
     win->color(0x00CCFFFF);
-
+    win->resizable();
     box = new Fl_Box(20,100,640,160, "Mr.Robot's Shop \n est. 1996");
     box->box(FL_EMBOSSED_BOX);
     box->labelsize(60);
     box->color(FL_BLACK);
     box->labelcolor(0x00CCFFFF);
     box->labelfont(FL_ZAPF_DINGBATS);
+
+    help_button = new Fl_Button(100, 300, 120, 40, "Help");
+    help_button->labelsize(20);
+    help_button->labelfont(FL_ZAPF_DINGBATS);
+    help_button->color(FL_WHITE);
+    help_button->callback((Fl_Callback *) menu_helpCB);
+
+    about_button = new Fl_Button(450, 300, 120, 40, "About");
+    about_button->labelsize(20);
+    about_button->labelfont(FL_ZAPF_DINGBATS);
+    about_button->color(FL_WHITE);
+    about_button->callback((Fl_Callback *)menu_aboutCB);
+
+
     // Install menu bar
     menubar = new Fl_Menu_Bar(0, 0, X, 30);
     menubar->menu(menuitems);
